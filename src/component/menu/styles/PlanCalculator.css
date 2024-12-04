@@ -1,0 +1,68 @@
+.title-section{
+    background: linear-gradient(90deg, #0074D9, #00c6ff);
+    border-radius: 15px;
+    padding: 1rem;
+    color: #f1f1f1;
+}
+
+.plan-calculator-container {
+    padding: 2rem;
+    border-radius: 15px;
+    color: #f1f1f1;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+}
+
+.animated-header {
+    background: linear-gradient(90deg, #0074D9, #00c6ff);
+    animation: gradient-animation 6s infinite alternate;
+}
+
+.animated-result {
+    animation: fade-in 1s ease-in-out;
+}
+
+.result-highlight {
+    font-weight: bold;
+    color: #00c6ff;
+}
+
+.input-field {
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.input-field:focus {
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.btn-hover {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.btn-hover:hover {
+    transform: scale(1.05);
+}
+
+@keyframes gradient-animation {
+    from {
+        background-position: 0% 50%;
+    }
+    to {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
