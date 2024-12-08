@@ -3,17 +3,23 @@
 .plan-calculator-section,
 .community-info-section,
 .faqs-section {
-    background-color: #f8f9fa;
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 40px 20px;
+  height: 95vh;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.image-landing {
+  max-height: 300px;
+  text-align: center;
 }
 
 h2 {
-    color: #343a40;
+  color: #343a40;
 }
 
-.image-center{
+.image-center {
   display: block;
   margin-left: auto;
   margin-right: auto;

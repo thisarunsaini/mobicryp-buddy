@@ -3,6 +3,7 @@ import './styles/Footer.css'; // Custom CSS for styling
 
 export const Footer: React.FC<any> = () => {
   return <footer className="text-white py-4">
+    <hr></hr>
     <div className="container">
       <div className="row">
         {/* Footer Left Section */}

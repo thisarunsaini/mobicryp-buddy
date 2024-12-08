@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
-import UsdtPrice from "./UsdtPrice";
+import { Col, Container, Image, Row } from "react-bootstrap";
 import "./styles/HeroSection.css";
 import { Link } from "react-router-dom";
 
