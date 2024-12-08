@@ -11,7 +11,7 @@ const NavigationBar: React.FC = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg">
             <NavLink className="navbar-brand px-2" to="/">
                 <img height={30} src="/assets/logo.png" alt="Brand Logo" className="brand-logo" />
             </NavLink>

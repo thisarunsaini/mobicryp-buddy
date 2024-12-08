@@ -1,3 +1,9 @@
+
+
+.nav-link {
+    color: white !important;
+  }
+
 .nav-link.active {
     color: #007bff; /* Color for active link */
     font-weight: bold;
