@@ -1,7 +1,6 @@
 import React from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
 import './styles/LandingPage.css'; // Your custom styles
-import HeroSection from '../utils/component/HeroSection';
+import HeroSection from './components/landing-page/HeroSectionLandingPage';
 import ArbitrageLandingPage from './components/landing-page/ArbitrageLandingPage';
 import UsdtCaseLandingPage from './components/landing-page/UsdtCaseLandingPage';
 import PlanCalculatorLandingPage from './components/landing-page/PlanCalculatorLandingPage';

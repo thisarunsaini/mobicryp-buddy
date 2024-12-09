@@ -1,9 +1,9 @@
 import React from "react";
 import { Col, Container, Image, Row } from "react-bootstrap";
-import "./styles/HeroSection.css";
+import "./styles/HeroSectionLandingPage.css";
 import { Link } from "react-router-dom";
 
-const HeroSection: React.FC<{ text: string }> = (props) => {
+const HeroSectionLandingPage: React.FC<{ text: string }> = (props) => {
   return (
     <Container
       fluid
@@ -20,7 +20,7 @@ const HeroSection: React.FC<{ text: string }> = (props) => {
             <Link
               to="/calculator"
             >
-              Start Calculating Futures
+              Now Start Calculating Your Future !!!
             </Link>
         </Col>
         <Col>
@@ -34,4 +34,4 @@ const HeroSection: React.FC<{ text: string }> = (props) => {
   );
 };
 
-export default HeroSection;
+export default HeroSectionLandingPage;

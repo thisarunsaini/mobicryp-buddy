@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ArbitrageModel from './component/menu/ArbitrageModel';
+import ArbitrageModel from './component/menu/Arbitrage';
 import UsdtUseCases from './component/menu/UsdtUseCases';
 import PlanCalculator from './component/menu/PlanCalculator';
 import LandingPage from './component/menu/LandingPage';

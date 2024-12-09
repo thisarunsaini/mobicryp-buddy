@@ -100,7 +100,7 @@ export const Footer: React.FC<any> = () => {
       <hr className="bg-light" />
 
       <div className="text-center">
-        <p className="mb-0"> © 2024 Mobicryp. All rights reserved.<br></br>
+        <p className="mb-0"> © 2024 Mobicryp-buddy. All rights reserved.<br></br>
           Follow us on social media: [Links to Social Media]</p>
       </div>
     </div>

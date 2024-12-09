@@ -31,7 +31,7 @@ const NavigationBar: React.FC = () => {
                     </li>
                     <li className="nav-item">
                         <NavLink className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} to="/arbitrage">
-                            <FaDollarSign /> Arbitrage Model
+                            <FaDollarSign /> Arbitrage
                         </NavLink>
                     </li>
                     <li className="nav-item">
