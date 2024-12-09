@@ -45,7 +45,7 @@ const Arbitrage: React.FC = () => {
       <Container>
         {currentSlide < slides.length - 1 ? (
           <motion.div
-            className="arbitrage-card"
+            className="arbitrage-card-main"
             variants={slideVariants}
             initial="hidden"
             animate="visible"
@@ -59,15 +59,15 @@ const Arbitrage: React.FC = () => {
             <Row>
               <Col>
                 <h2 className="text-center">Arbitrage Model Overview</h2>
-                <h5 className="text-center mb-4">
-                  How Mobicryp Maximizes Profit through Currency Arbitrage
-                </h5>
+                <h6 className="text-center">
+                  Let's see how Mobicryp Maximizes Profit through Currency Arbitrage!
+                </h6>
               </Col>
             </Row>
 
             <Row>
               <Col md={4}>
-                <Card className="mt-4 shadow border-0">
+                <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
                     <h5 className="card-title">Step 1: Buy USDT in Dubai</h5>
                     <p className="card-text">
@@ -77,7 +77,7 @@ const Arbitrage: React.FC = () => {
                 </Card>
               </Col>
               <Col md={4}>
-                <Card className="mt-4 shadow border-0">
+                <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
                     <h5 className="card-title">Step 2: Sell USDT in India</h5>
                     <p className="card-text">
@@ -87,7 +87,7 @@ const Arbitrage: React.FC = () => {
                 </Card>
               </Col>
               <Col md={4}>
-                <Card className="mt-4 shadow border-0">
+                <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
                     <h5 className="card-title">Step 3: Calculate Profit</h5>
                     <p className="card-text">
@@ -99,7 +99,7 @@ const Arbitrage: React.FC = () => {
             </Row>
             <Row>
               <Col>
-                <Card className="mt-4 shadow border-0">
+                <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
                     <h4 className="card-title">Example Calculation</h4>
                     <p>
@@ -120,7 +120,7 @@ const Arbitrage: React.FC = () => {
             </Row>
             <Row>
               <Col>
-                <Card className="mt-4 shadow border-0">
+                <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
                     <h4 className="card-title">Long-Term Profit Calculation</h4>
                     <p>

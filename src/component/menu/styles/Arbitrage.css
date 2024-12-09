@@ -11,6 +11,14 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
+
+.arbitrage-card-main {
+    background-color: #2d2d2d !important;
+    border-radius: 8px;
+    color: #fff !important;
+    box-shadow: 0 4px 20px rgba(241, 241, 241, 0.3);
+}
+
 .slide-title {
     font-size: 1.5rem;
     font-weight: bold;
