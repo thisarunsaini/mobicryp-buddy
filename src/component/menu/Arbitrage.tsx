@@ -45,7 +45,7 @@ const Arbitrage: React.FC = () => {
       <Container>
         {currentSlide < slides.length - 1 ? (
           <motion.div
-            className="arbitrage-card-main"
+            className="arbitrage-card"
             variants={slideVariants}
             initial="hidden"
             animate="visible"
