@@ -10,7 +10,7 @@ const UsdtCaseLandingPage: React.FC = () => {
             <hr></hr>
             <p>
                 USDT can be used for various purposes, including trading, remittances, and as a stable currency for transactions.
-                Explore how Mobycryp utilizes USDT for maximizing profits and ensuring a smooth trading experience.
+                Explore how Mobicryp utilizes USDT for maximizing profits and ensuring a smooth trading experience.
             </p>
             <Link to="/usdt-usecases">Learn More</Link>
         </Col>

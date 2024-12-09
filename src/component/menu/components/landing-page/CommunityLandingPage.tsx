@@ -8,7 +8,7 @@ const CommunityLandingPage: React.FC = () => {
         <Col>
         <h2>Community Information</h2>
                 <p>
-                    Join our vibrant community to share insights, strategies, and experiences with other Mobycryp users.
+                    Join our vibrant community to share insights, strategies, and experiences with other Mobicryp users.
                     Together, we can maximize our trading potential!
                 </p>
             <Link to="/community">Join Community</Link>
