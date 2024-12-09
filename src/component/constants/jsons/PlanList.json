@@ -1,0 +1,29 @@
+[
+    {
+        "hub":55,
+        "capacity":300,
+        "durationInMonths":25,
+        "installationType":"daily",
+        "growth":250,
+        "type":"manual",
+        "remarks":"Base Package"
+    },
+    {
+        "hub":165,
+        "capacity":900,
+        "durationInMonths":25,
+        "growth":250,
+        "installationType":"daily",
+        "type":"manual",
+        "remarks":"Base Package"
+    },
+    {
+        "hub":666,
+        "capacity":6666,
+        "durationInMonths":18,
+        "growth":300,
+        "installationType":"holding",
+        "type":"auto",
+        "remarks":"Base Package"
+    }
+]

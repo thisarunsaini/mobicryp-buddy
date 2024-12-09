@@ -24,13 +24,13 @@ const UsdtPrice = () => {
   }, []);
 
   return (
-      <h6>Current USDT Price(Public) in India
+      <h6>USDT's Public Price in India &nbsp;
       {error ? (
-        <Card.Text>{error}</Card.Text>
+        <>{error}</>
       ) : (
-        <Card.Text>
+        <>
           {price !== null ? `₹${price.toFixed(2)}` : "Loading..."}
-        </Card.Text>
+        </>
       )}</h6>
   );
 };

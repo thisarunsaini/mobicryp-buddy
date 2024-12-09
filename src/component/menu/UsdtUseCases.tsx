@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaExchangeAlt, FaShoppingCart, FaGlobe, FaPiggyBank, FaBolt, FaMoneyBillWave } from 'react-icons/fa';
+import './styles/UsdtUseCases.css'
 
 const UsdtUseCases: React.FC = () => {
     return (
-        <Container className="my-5">
+        <Container className="my-5 usdt-use-cases">
             <h2 className="text-center my-4">Global USDT Use Cases</h2>
-            <p className="text-center text-muted mb-5">
+            <p className="usdt-use-cases text-center text-muted mb-5">
                 Tether (USDT) has revolutionized the financial world, offering a stable and flexible option for various transactions globally. Below are some of the most intensive and extensive use cases of USDT.
             </p>
 

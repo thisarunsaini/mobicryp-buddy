@@ -70,131 +70,143 @@ const PlanCalculator: React.FC = () => {
     };
 
     return (
-        <Container className="my-5 plan-calculator-container">
-            <div className='title-section rounded-0'>
-                <h2 className="fw-bold text-light">Plan Calculator <UsdtPrice /></h2>
-            </div>
-            <Card className="shadow-lg border-0 rounded glass-card">
-                <Card.Body className="p-4">
-                    <Form onSubmit={calculateReturns}>
-                        <Row className="mb-4">
-                            <Col md={6}>
-                                <Form.Group controlId="hubAmount">
-                                    <Form.Label>Hub Amount (USDT)</Form.Label>
+        <Container className="plan-calculator-container">
+            <Row>
+              <Col>
+                <h2 className="text-center">Plan Calculator</h2>
+                <h6 className="text-center">
+                <UsdtPrice />
+                </h6>
+                <br></br>
+              </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    
+                        <Card.Body className="p-4">
+                            <Form onSubmit={calculateReturns}>
+                                <Row className="mb-4">
+                                    <Col>
+                                        <Form.Group controlId="hubAmount">
+                                            <Form.Label>Hub Amount (USDT)</Form.Label>
+                                            <Form.Control
+                                                name="hubAmount"
+                                                type="number"
+                                                placeholder="Enter Hub Amount"
+                                                className="input-field styled-input"
+                                                value={hubAmount}
+                                                onChange={(e) => setHubAmount(e.target.value)}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    </Row>
+                                    <Row className="mb-4">
+                                    <Col>
+                                        <Form.Group controlId="hubCapacity">
+                                            <Form.Label>Hub Capacity (USDT)</Form.Label>
+                                            <Form.Control
+                                                name="hubCapacity"
+                                                type="number"
+                                                placeholder="Enter Hub Capacity"
+                                                className="input-field styled-input"
+                                                value={hubCapacity}
+                                                onChange={(e) => setHubCapacity(e.target.value)}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mb-4">
+                                    <Col md={6}>
+                                        <Form.Group controlId="duration">
+                                            <Form.Label>Duration (Months)</Form.Label>
+                                            <Form.Control
+                                                name="duration"
+                                                type="number"
+                                                placeholder="Enter Duration"
+                                                className="input-field styled-input"
+                                                value={duration}
+                                                onChange={(e) => setDuration(e.target.value)}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Group controlId="returnPercentage">
+                                            <Form.Label>Return Percentage (%)</Form.Label>
+                                            <Form.Control
+                                                name="returnPercentage"
+                                                type="number"
+                                                placeholder="Enter Return Percentage"
+                                                className="input-field styled-input"
+                                                value={returnPercentage}
+                                                onChange={(e) => setReturnPercentage(e.target.value)}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
+                                <Form.Group controlId="mintingType" className="mb-4">
+                                    <Form.Label>Minting Type</Form.Label>
                                     <Form.Control
-                                        name="hubAmount"
-                                        type="number"
-                                        placeholder="Enter Hub Amount"
+                                        as="select"
+                                        name="mintingType"
                                         className="input-field styled-input"
-                                        value={hubAmount}
-                                        onChange={(e) => setHubAmount(e.target.value)}
-                                        required
-                                    />
+                                        value={mintingType}
+                                        onChange={handleMintingTypeChange}
+                                    >
+                                        <option value="Manual">Manual</option>
+                                        <option value="Auto">Auto</option>
+                                    </Form.Control>
                                 </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="hubCapacity">
-                                    <Form.Label>Hub Capacity (USDT)</Form.Label>
-                                    <Form.Control
-                                        name="hubCapacity"
-                                        type="number"
-                                        placeholder="Enter Hub Capacity"
-                                        className="input-field styled-input"
-                                        value={hubCapacity}
-                                        onChange={(e) => setHubCapacity(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
 
-                        <Row className="mb-4">
-                            <Col md={6}>
-                                <Form.Group controlId="duration">
-                                    <Form.Label>Duration (Months)</Form.Label>
-                                    <Form.Control
-                                        name="duration"
-                                        type="number"
-                                        placeholder="Enter Duration"
-                                        className="input-field styled-input"
-                                        value={duration}
-                                        onChange={(e) => setDuration(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="returnPercentage">
-                                    <Form.Label>Return Percentage (%)</Form.Label>
-                                    <Form.Control
-                                        name="returnPercentage"
-                                        type="number"
-                                        placeholder="Enter Return Percentage"
-                                        className="input-field styled-input"
-                                        value={returnPercentage}
-                                        onChange={(e) => setReturnPercentage(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                                {showInstallment && (
+                                    <Form.Group controlId="installmentSpan" className="mb-4">
+                                        <Form.Label>Installment Span (Months)</Form.Label>
+                                        <Form.Control
+                                            name="installmentSpan"
+                                            type="number"
+                                            placeholder="Enter Installment Span"
+                                            className="input-field styled-input"
+                                            value={installmentSpan}
+                                            onChange={(e) => setInstallmentSpan(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+                                )}
 
-                        <Form.Group controlId="mintingType" className="mb-4">
-                            <Form.Label>Minting Type</Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="mintingType"
-                                className="input-field styled-input"
-                                value={mintingType}
-                                onChange={handleMintingTypeChange}
-                            >
-                                <option value="Manual">Manual</option>
-                                <option value="Auto">Auto</option>
-                            </Form.Control>
-                        </Form.Group>
+                                {error && <Alert variant="danger">{error}</Alert>}
 
-                        {showInstallment && (
-                            <Form.Group controlId="installmentSpan" className="mb-4">
-                                <Form.Label>Installment Span (Months)</Form.Label>
-                                <Form.Control
-                                    name="installmentSpan"
-                                    type="number"
-                                    placeholder="Enter Installment Span"
-                                    className="input-field styled-input"
-                                    value={installmentSpan}
-                                    onChange={(e) => setInstallmentSpan(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                        )}
+                                <div className="text-center mt-3">
+                                    <Button variant="success" size="lg" type="submit" className="btn-calculate me-2 btn-hover">
+                                        Calculate
+                                    </Button>
+                                    <Button variant="outline-secondary" size="lg" onClick={clearFields} className="btn-clear btn-hover">
+                                        Clear
+                                    </Button>
+                                </div>
+                            </Form>
 
-                        {error && <Alert variant="danger">{error}</Alert>}
-
-                        <div className="text-center mt-3">
-                            <Button variant="success" size="lg" type="submit" className="btn-calculate me-2 btn-hover">
-                                Calculate
-                            </Button>
-                            <Button variant="outline-secondary" size="lg" onClick={clearFields} className="btn-clear btn-hover">
-                                Clear
-                            </Button>
-                        </div>
-                    </Form>
-
-                    <Card className="mt-4 result-card">
-                        <Card.Body className="text-center result-card-body animated-result">
-                            <h4 className="fw-bold">
-                                Total Return: <span className="text-success result-highlight">{result.totalReturn.toFixed(2)} USDT</span>
-                            </h4>
-                            <h5 className="fw-bold">
-                                {mintingType === 'Manual' ? 'Per Month Return' : 'Per Span Return'}: <span className="text-info result-highlight">{result.perReturn.toFixed(2)} USDT</span>
-                            </h5>
-                            <h5>
-                                Total Investment: <span className="text-warning result-highlight">{result.totalInvestment.toFixed(2)} USDT</span>
-                            </h5>
+                            <Card className="mt-4 result-card">
+                                <Card.Body className="text-center result-card-body animated-result">
+                                    <h4 className="fw-bold">
+                                        Total Return: <span className="text-success result-highlight">{result.totalReturn.toFixed(2)} USDT</span>
+                                    </h4>
+                                    <h5 className="fw-bold">
+                                        {mintingType === 'Manual' ? 'Per Month Return' : 'Per Span Return'}: <span className="text-info result-highlight">{result.perReturn.toFixed(2)} USDT</span>
+                                    </h5>
+                                    <h5>
+                                        Total Investment: <span className="text-warning result-highlight">{result.totalInvestment.toFixed(2)} USDT</span>
+                                    </h5>
+                                </Card.Body>
+                            </Card>
                         </Card.Body>
-                    </Card>
-                </Card.Body>
-            </Card>
+                </Col>
+            </Row>
         </Container>
     );
 };
