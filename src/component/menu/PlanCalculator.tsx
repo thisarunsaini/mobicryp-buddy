@@ -7,6 +7,8 @@ import {
   Col,
   Card,
   Alert,
+  Image,
+  Carousel,
 } from "react-bootstrap";
 import UsdtPrice from "../utils/component/UsdtPrice";
 import "./styles/PlanCalculator.css";
@@ -93,19 +95,25 @@ const PlanCalculator: React.FC = () => {
     <Container className="plan-calculator-container">
       <Row>
         <Col>
-        <div className="title-col-div">
-          <h2 className="text-center">Plan Calculator</h2>
-          <hr></hr>
-          <h6 className="text-center">
-            <UsdtPrice />
-          </h6>
-        </div>
+          <div className="title-col-div">
+            <h2 className="text-center">Plan Calculator</h2>
+            <hr></hr>
+            <h6 className="text-center">
+              <UsdtPrice />
+            </h6>
+          </div>
           <br></br>
         </Col>
       </Row>
+
+      <Row>
+        <Col md={12} lg={6} xl={6}>
+          <FrequencySelect />
+        </Col>
+      </Row>
+
       <Row>
         <Col>
-        <FrequencySelect/>
           <Card.Body className="p-4">
             <Form onSubmit={calculateReturns}>
               <Row className="mb-4">
@@ -249,6 +257,21 @@ const PlanCalculator: React.FC = () => {
               </Card.Body>
             </Card>
           </Card.Body>
+        </Col>
+        <Col className="d-flex justify-content-center align-items-center">
+          <div className="plan-calculator-img-div">
+            <Carousel data-bs-theme="dark">
+              <Carousel.Item>
+                <Image className="image-plan-crypt" src="assets/undrawMoney.svg" />
+              </Carousel.Item>
+              <Carousel.Item>
+                <Image className="image-plan-crypt" src="assets/undrawCryptocurrencey.svg" />
+              </Carousel.Item>
+              <Carousel.Item>
+                <Image className="image-plan-crypt" src="assets/undrawMoneyChart.svg" />
+              </Carousel.Item>
+            </Carousel>
+          </div>
         </Col>
       </Row>
     </Container>
