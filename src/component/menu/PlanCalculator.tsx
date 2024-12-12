@@ -262,13 +262,13 @@ const PlanCalculator: React.FC = () => {
           <div className="plan-calculator-img-div">
             <Carousel data-bs-theme="dark">
               <Carousel.Item>
-                <Image className="image-plan-crypt" src="assets/undrawMoney.svg" />
+                <Image className="image-plan-crypt w-100" src="assets/undrawMoney.svg" />
               </Carousel.Item>
               <Carousel.Item>
-                <Image className="image-plan-crypt" src="assets/undrawCryptocurrencey.svg" />
+                <Image className="image-plan-crypt w-100" src="assets/undrawCryptocurrencey.svg" />
               </Carousel.Item>
               <Carousel.Item>
-                <Image className="image-plan-crypt" src="assets/undrawMoneyChart.svg" />
+                <Image className="image-plan-crypt w-100" src="assets/undrawMoneyChart.svg" />
               </Carousel.Item>
             </Carousel>
           </div>
