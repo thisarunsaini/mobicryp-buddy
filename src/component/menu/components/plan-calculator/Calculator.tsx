@@ -44,7 +44,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
     setGrossReturn("");
     setMintType("");
     setName("");
-    setSelectedHub(undefined);
+    setSelectedHub(0);
   };
 
   return frequency && planList ? (
@@ -58,12 +58,13 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
                 as="select"
                 onChange={handleHubSelection}
                 className="input-field styled-input"
+                value={selectedHub}
               >
-                <option selected value="">
+                <option selected value="0">
                   Select Hub
                 </option>
                 {planList[frequency]?.map((plan: PlanType, index: number) => (
-                  <option key={index} value={plan.hub}>
+                  <option key={index + 1} value={plan.hub}>
                     {plan.hubName}
                   </option>
                 )) || <></>}
