@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Container, Card } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
 const UsdtPrice = () => {
   const [price, setPrice] = useState<number | null>(null);
@@ -24,14 +22,14 @@ const UsdtPrice = () => {
   }, []);
 
   return (
-      <h6>USDT's Public Price in India &nbsp;
+    <h6>
+      USDT's Public Price in India &nbsp;
       {error ? (
         <>{error}</>
       ) : (
-        <>
-          {price !== null ? `₹${price.toFixed(2)}` : "Loading..."}
-        </>
-      )}</h6>
+        <>{price !== null ? `₹${price.toFixed(2)}` : "Loading..."}</>
+      )}
+    </h6>
   );
 };
 
