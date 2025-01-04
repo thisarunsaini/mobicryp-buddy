@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mobicryp-buddy/static/css/main.d5de377c.css",
-    "main.js": "/mobicryp-buddy/static/js/main.64870e84.js",
+    "main.js": "/mobicryp-buddy/static/js/main.ea53cc28.js",
     "static/js/453.177b4165.chunk.js": "/mobicryp-buddy/static/js/453.177b4165.chunk.js",
     "index.html": "/mobicryp-buddy/index.html",
     "main.d5de377c.css.map": "/mobicryp-buddy/static/css/main.d5de377c.css.map",
-    "main.64870e84.js.map": "/mobicryp-buddy/static/js/main.64870e84.js.map",
+    "main.ea53cc28.js.map": "/mobicryp-buddy/static/js/main.ea53cc28.js.map",
     "453.177b4165.chunk.js.map": "/mobicryp-buddy/static/js/453.177b4165.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d5de377c.css",
-    "static/js/main.64870e84.js"
+    "static/js/main.ea53cc28.js"
   ]
 }
