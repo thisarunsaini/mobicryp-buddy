@@ -1,5 +1,6 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { urlPath } from "../../../utils/imageUtils";
 
 const PlanCalculatorLandingPage: React.FC = () => {
   return (
@@ -17,7 +18,7 @@ const PlanCalculatorLandingPage: React.FC = () => {
         <Col className="d-flex justify-content-center align-items-center">
           <Image
             className="image-landing"
-            src="mobicryp-buddy/assets/undrawCalculator.svg"
+            src={urlPath("assets/undrawCalculator.svg")}
           />
         </Col>
       </Row>

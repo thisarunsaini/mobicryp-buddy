@@ -1,4 +1,5 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
+import { urlPath } from "../../../utils/imageUtils";
 
 const ArbitrageLandingPage: React.FC = () => {
   return (
@@ -21,7 +22,7 @@ const ArbitrageLandingPage: React.FC = () => {
         <Col className="d-flex justify-content-center align-items-center">
           <Image
             className="image-landing"
-            src="mobicryp-buddy/assets/undrawArbitrage.svg"
+            src={urlPath("assets/undrawArbitrage.svg")}
           />
         </Col>
       </Row>

@@ -7,6 +7,7 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import "./styles/Navbar.css"; // Include your CSS styles
+import { urlPath } from "../utils/imageUtils";
 
 const NavigationBar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
@@ -20,7 +21,7 @@ const NavigationBar: React.FC = () => {
       <NavLink className="navbar-brand px-2" to="/">
         <img
           height={30}
-          src="mobicryp-buddy/assets/logo.png"
+          src={urlPath("assets/logo.png")}
           alt="Brand Logo"
           className="brand-logo"
         />

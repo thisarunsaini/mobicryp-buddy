@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
+import { urlPath } from "../../../utils/imageUtils";
 
 export const ArbitrageModal: React.FC<any> = (props: any) => {
   return (
@@ -17,7 +18,7 @@ export const ArbitrageModal: React.FC<any> = (props: any) => {
           <iframe
             width="100%"
             height="786"
-            src="mobicryp-buddy/assets/arbitrage-video.mp4" // Replace with your video URL
+            src={urlPath("assets/arbitrage-video.mp4")} // Replace with your video URL
             title="Arbitrage Model Video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

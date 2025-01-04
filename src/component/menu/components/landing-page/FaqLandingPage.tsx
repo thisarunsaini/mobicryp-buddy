@@ -1,5 +1,6 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { urlPath } from "../../../utils/imageUtils";
 
 const FaqLandingPage: React.FC = () => {
   return (
@@ -17,7 +18,7 @@ const FaqLandingPage: React.FC = () => {
         <Col className="d-flex justify-content-center align-items-center">
           <Image
             className="image-landing"
-            src="mobicryp-buddy/assets/undrawFaq.svg"
+            src={urlPath("assets/undrawFaq.svg")}
           />
         </Col>
       </Row>

@@ -1,5 +1,6 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { urlPath } from "../../../utils/imageUtils";
 
 const UsdtCaseLandingPage: React.FC = () => {
   return (
@@ -19,7 +20,7 @@ const UsdtCaseLandingPage: React.FC = () => {
         <Col className="d-flex justify-content-center align-items-center">
           <Image
             className="image-landing"
-            src="mobicryp-buddy/assets/undrawUsecases.svg"
+            src={urlPath("assets/undrawUsecases.svg")}
           />
         </Col>
       </Row>

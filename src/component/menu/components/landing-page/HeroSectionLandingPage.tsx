@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Container, Image, Row } from "react-bootstrap";
 import "./styles/HeroSectionLandingPage.css";
 import { Link } from "react-router-dom";
+import { urlPath } from "../../../utils/imageUtils";
 
 const HeroSectionLandingPage: React.FC<{ text: string }> = (props) => {
   return (
@@ -22,7 +23,7 @@ const HeroSectionLandingPage: React.FC<{ text: string }> = (props) => {
         <Col>
           <Image
             className="hero-section-crypto"
-            src="mobicryp-buddy/assets/undrawCrypto.svg"
+            src={urlPath("assets/undrawCrypto.svg")}
           />
         </Col>
       </Row>

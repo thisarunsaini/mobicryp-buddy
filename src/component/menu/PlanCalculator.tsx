@@ -5,6 +5,7 @@ import "./styles/PlanCalculator.css";
 import FrequencySelect from "./components/plan-calculator/FrequencySelect";
 import { Calculator } from "./components/plan-calculator/Calculator";
 import { Frequency } from "../types/PlanType";
+import { urlPath } from "../utils/imageUtils";
 
 const PlanCalculator: React.FC = () => {
   const [frequency, setFrequency] = React.useState<Frequency>(Frequency.Daily);
@@ -40,19 +41,19 @@ const PlanCalculator: React.FC = () => {
               <Carousel.Item>
                 <Image
                   className="image-plan-crypt w-100"
-                  src="mobicryp-buddy/assets/undrawMoney.svg"
+                  src={urlPath("assets/undrawMoney.svg")}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <Image
                   className="image-plan-crypt w-100"
-                  src="mobicryp-buddy/assets/undrawCryptocurrencey.svg"
+                  src={urlPath("assets/undrawCryptocurrencey.svg")}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <Image
                   className="image-plan-crypt w-100"
-                  src="mobicryp-buddy/assets/undrawMoneyChart.svg"
+                  src={urlPath("assets/undrawMoneyChart.svg")}
                 />
               </Carousel.Item>
             </Carousel>
