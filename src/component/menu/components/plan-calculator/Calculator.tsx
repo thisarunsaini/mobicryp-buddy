@@ -4,6 +4,8 @@ import { Frequency, PlanType } from "../../../types/PlanType";
 import React from "react";
 import { PlanListType } from "../../../types/PlanTypes";
 import { PlantListing } from "../../../constants/jsons/PlanList";
+import "./styles/Calculator.css";
+import { Link } from "react-router-dom";
 
 export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   const { frequency } = props;
@@ -139,15 +141,17 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
 
         {/* {error && <Alert variant="danger">{error}</Alert>} */}
 
-        <div className="text-center mt-3">
+        <div className="mt-3 w-100 d-flex align-items-center justify-content-between">
           <Button
             variant="outline-secondary"
-            size="lg"
             onClick={clearDependentFields}
             className="btn-clear btn-hover"
           >
             Clear
           </Button>
+          <Link className="power-plan-style" to={"/growth"}>
+            <span>Plan Your Returns with power plans, click here</span>
+          </Link>
         </div>
       </Form>
     </Card.Body>

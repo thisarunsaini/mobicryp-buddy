@@ -5,6 +5,8 @@ import {
   FaDollarSign,
   FaCalculator,
   FaInfoCircle,
+  FaChartLine,
+  FaCogs,
 } from "react-icons/fa";
 import "./styles/Navbar.css"; // Include your CSS styles
 import { urlPath } from "../utils/imageUtils";
@@ -63,7 +65,17 @@ const NavigationBar: React.FC = () => {
               }
               to="/calculator"
             >
-              <FaCalculator /> Plan Calculator
+              <FaCalculator /> Calculator
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active" : ""}`
+              }
+              to="/calculator"
+            >
+              <FaChartLine /> Growth Planner
             </NavLink>
           </li>
           <li className="nav-item">
@@ -73,7 +85,7 @@ const NavigationBar: React.FC = () => {
               }
               to="/usdt-usecases"
             >
-              <FaCalculator /> Use Case
+              <FaCogs /> Use Case
             </NavLink>
           </li>
           <li className="nav-item">

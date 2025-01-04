@@ -1,0 +1,57 @@
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.table th {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.table td {
+    background-color: #f9f9f9;
+}
+
+.table .reinvest-btn {
+    background-color: #28a745;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.table .reinvest-btn:hover {
+    background-color: #218838;
+}
+
+.timeline-container {
+    margin-top: 30px;
+}
+
+.timeline-title {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.return-text {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.error-message {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 15px;
+}

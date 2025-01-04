@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ArbitrageModel from "./component/menu/Arbitrage";
 import UsdtUseCases from "./component/menu/UsdtUseCases";
 import PlanCalculator from "./component/menu/PlanCalculator";
@@ -12,6 +7,7 @@ import LandingPage from "./component/menu/LandingPage";
 import NavigationBar from "./component/common/Navbar";
 import { Footer } from "./component/common/Footer";
 import FaqPage from "./component/menu/FaqPage";
+import { GrowthPlanner } from "./component/menu/GrowthPlanner";
 
 const App: React.FC = () => {
   return (
@@ -25,6 +21,7 @@ const App: React.FC = () => {
             <Route path="/arbitrage" element={<ArbitrageModel />} />
             <Route path="/usdt-usecases" element={<UsdtUseCases />} />
             <Route path="/calculator" element={<PlanCalculator />} />
+            <Route path="/growth" element={<GrowthPlanner />} />
             <Route path="/faqs" element={<FaqPage />} />
             {/* Uncomment these routes when ready */}
             {/* <Route path="/community" element={<Community />} />
