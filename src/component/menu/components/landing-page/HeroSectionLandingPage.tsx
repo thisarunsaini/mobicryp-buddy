@@ -17,16 +17,12 @@ const HeroSectionLandingPage: React.FC<{ text: string }> = (props) => {
           <p className="hero-subtitle animated-subtitle">
             Revolutionizing USDT Trading Across Borders
           </p>
-            <Link
-              to="/calculator"
-            >
-              Now Start Calculating Your Future !!!
-            </Link>
+          <Link to="/calculator">Now Start Calculating Your Future !!!</Link>
         </Col>
         <Col>
           <Image
             className="hero-section-crypto"
-            src="assets/undrawCrypto.svg"
+            src="mobicryp-buddy/assets/undrawCrypto.svg"
           />
         </Col>
       </Row>

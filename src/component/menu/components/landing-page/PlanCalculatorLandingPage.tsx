@@ -15,7 +15,10 @@ const PlanCalculatorLandingPage: React.FC = () => {
           <Link to="/calculator">Calculate Now</Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-          <Image className="image-landing" src="assets/undrawCalculator.svg" />
+          <Image
+            className="image-landing"
+            src="mobicryp-buddy/assets/undrawCalculator.svg"
+          />
         </Col>
       </Row>
     </Container>

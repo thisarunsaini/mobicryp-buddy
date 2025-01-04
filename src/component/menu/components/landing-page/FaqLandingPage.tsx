@@ -15,7 +15,10 @@ const FaqLandingPage: React.FC = () => {
           <Link to="/faqs">View FAQs</Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-          <Image className="image-landing" src="assets/undrawFaq.svg" />
+          <Image
+            className="image-landing"
+            src="mobicryp-buddy/assets/undrawFaq.svg"
+          />
         </Col>
       </Row>
     </Container>

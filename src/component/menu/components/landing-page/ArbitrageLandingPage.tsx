@@ -19,8 +19,9 @@ const ArbitrageLandingPage: React.FC = () => {
           </p>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-        <Image className="image-landing"
-            src="assets/undrawArbitrage.svg"
+          <Image
+            className="image-landing"
+            src="mobicryp-buddy/assets/undrawArbitrage.svg"
           />
         </Col>
       </Row>

@@ -40,19 +40,19 @@ const PlanCalculator: React.FC = () => {
               <Carousel.Item>
                 <Image
                   className="image-plan-crypt w-100"
-                  src="assets/undrawMoney.svg"
+                  src="mobicryp-buddy/assets/undrawMoney.svg"
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <Image
                   className="image-plan-crypt w-100"
-                  src="assets/undrawCryptocurrencey.svg"
+                  src="mobicryp-buddy/assets/undrawCryptocurrencey.svg"
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <Image
                   className="image-plan-crypt w-100"
-                  src="assets/undrawMoneyChart.svg"
+                  src="mobicryp-buddy/assets/undrawMoneyChart.svg"
                 />
               </Carousel.Item>
             </Carousel>

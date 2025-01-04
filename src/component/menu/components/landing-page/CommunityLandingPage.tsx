@@ -15,7 +15,10 @@ const CommunityLandingPage: React.FC = () => {
           <Link to="/community">Join Community</Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-          <Image className="image-landing" src="assets/undrawCommunity.svg" />
+          <Image
+            className="image-landing"
+            src="mobicryp-buddy/assets/undrawCommunity.svg"
+          />
         </Col>
       </Row>
     </Container>

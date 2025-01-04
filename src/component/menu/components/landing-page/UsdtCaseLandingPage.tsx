@@ -17,7 +17,10 @@ const UsdtCaseLandingPage: React.FC = () => {
           <Link to="/usdt-usecases">Learn More</Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-          <Image className="image-landing" src="assets/undrawUsecases.svg" />
+          <Image
+            className="image-landing"
+            src="mobicryp-buddy/assets/undrawUsecases.svg"
+          />
         </Col>
       </Row>
     </Container>
