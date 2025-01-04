@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Card, Row, Col, Alert, Button, Form } from "react-bootstrap";
+import { useEffect } from "react";
+import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import { Frequency, PlanType } from "../../../types/PlanType";
 import React from "react";
 import { PlanListType } from "../../../types/PlanTypes";
@@ -14,7 +14,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   const [mintType, setMintType] = React.useState<string>("");
   const [name, setName] = React.useState<string>("");
   const [selectedHub, setSelectedHub] = React.useState<number>();
-  const [error, setError] = React.useState<string | null>(null);
+  // const [error, setError] = React.useState<string | null>(null);
 
   useEffect(() => {
     clearDependentFields();
@@ -137,7 +137,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
           </Col>
         </Row>
 
-        {error && <Alert variant="danger">{error}</Alert>}
+        {/* {error && <Alert variant="danger">{error}</Alert>} */}
 
         <div className="text-center mt-3">
           <Button

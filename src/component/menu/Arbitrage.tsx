@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Container, Row, Col, Card, Modal, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import "./styles/Arbitrage.css"; // Custom CSS for styling
 import { ArbitrageModal } from "./components/arbitrage/ArbitrageModal";
 
@@ -60,7 +60,8 @@ const Arbitrage: React.FC = () => {
               <Col>
                 <h2 className="text-center">Arbitrage Model Overview</h2>
                 <h6 className="text-center">
-                  Let's see how Mobicryp Maximizes Profit through Currency Arbitrage!
+                  Let's see how Mobicryp Maximizes Profit through Currency
+                  Arbitrage!
                 </h6>
               </Col>
             </Row>
@@ -175,11 +176,10 @@ const Arbitrage: React.FC = () => {
                 ></div>
               </div>
             </div>
-
           </Col>
         </Row>
-            {/* Video Modal */}
-            <ArbitrageModal showVideo={showVideo} handleClose={handleClose} />
+        {/* Video Modal */}
+        <ArbitrageModal showVideo={showVideo} handleClose={handleClose} />
       </Container>
     </div>
   );

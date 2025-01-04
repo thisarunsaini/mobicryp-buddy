@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Row, Col, Image, Carousel } from "react-bootstrap";
 import UsdtPrice from "../utils/component/UsdtPrice";
 import "./styles/PlanCalculator.css";
 import FrequencySelect from "./components/plan-calculator/FrequencySelect";
 import { Calculator } from "./components/plan-calculator/Calculator";
-import { PlantListing } from "../constants/jsons/PlanList";
 import { Frequency } from "../types/PlanType";
 
 const PlanCalculator: React.FC = () => {
