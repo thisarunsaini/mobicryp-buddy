@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  BrowserRouter,
+} from "react-router-dom";
 import ArbitrageModel from "./component/menu/Arbitrage";
 import UsdtUseCases from "./component/menu/UsdtUseCases";
 import PlanCalculator from "./component/menu/PlanCalculator";
@@ -11,13 +16,12 @@ import FaqPage from "./component/menu/FaqPage";
 const App: React.FC = () => {
   return (
     <>
-      <Router>
+      <BrowserRouter basename="/mobicryp-buddy">
         <NavigationBar />
         <div style={{ minHeight: "90vh" }}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/landing" element={<LandingPage />} />
-            <Route path="/mobicryp-buddy" element={<LandingPage />} />
             <Route path="/arbitrage" element={<ArbitrageModel />} />
             <Route path="/usdt-usecases" element={<UsdtUseCases />} />
             <Route path="/calculator" element={<PlanCalculator />} />
@@ -27,7 +31,7 @@ const App: React.FC = () => {
             <Route path="/faqs" element={<FAQs />} /> */}
           </Routes>
         </div>
-      </Router>
+      </BrowserRouter>
       <Footer />
     </>
   );
