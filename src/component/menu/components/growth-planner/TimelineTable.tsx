@@ -1,108 +1,144 @@
 import React, { useState } from "react";
-import { Table, Button, Form, Accordion } from "react-bootstrap";
-import "./styles/TimelineTable.css";
+import { Table, Button, Form } from "react-bootstrap";
 
-type Plan = {
+interface DataRow {
   id: number;
   name: string;
-  amount: number;
-  duration: number; // in months
-  returns: number; // as a percentage
-};
-
-type RowData = {
+  returnAmount: number;
   date: string;
-  returnSum: number;
-  planId: number | null;
-};
+  details: string;
+}
 
-const plans: Plan[] = [
-  { id: 1, name: "Plan A", amount: 500, duration: 6, returns: 10 },
-  { id: 2, name: "Plan B", amount: 1000, duration: 12, returns: 15 },
-  { id: 3, name: "Plan C", amount: 2000, duration: 24, returns: 20 },
-];
+export const TimelineTable: React.FC = () => {
+  // Sample data for the table
+  const data: DataRow[] = [
+    {
+      id: 1,
+      name: "Plan A",
+      returnAmount: 100,
+      date: "2025-01-01",
+      details: "Details about Plan A.",
+    },
+    {
+      id: 2,
+      name: "Plan B",
+      returnAmount: 200,
+      date: "2025-02-01",
+      details: "Details about Plan B.",
+    },
+    {
+      id: 3,
+      name: "Plan C",
+      returnAmount: 300,
+      date: "2025-03-01",
+      details: "Details about Plan C.",
+    },
+  ];
 
-const TimelineTable: React.FC = () => {
-  const [rows, setRows] = useState<RowData[]>([]);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [generatedTables, setGeneratedTables] = useState<number[]>([]);
 
-  const addRow = () => {
-    const newDate = new Date();
-    newDate.setMonth(newDate.getMonth() + rows.length * 6);
-
-    setRows([
-      ...rows,
-      {
-        date: newDate.toISOString().split("T")[0],
-        returnSum:
-          rows.length > 0 ? rows[rows.length - 1].returnSum + 500 : 500,
-        planId: null,
-      },
-    ]);
+  const handleRowExpand = (id: number) => {
+    setExpandedRow((prev) => (prev === id ? null : id));
   };
 
-  const handlePlanSelect = (index: number, planId: number) => {
-    const updatedRows = [...rows];
-    updatedRows[index].planId = planId;
-    setRows(updatedRows);
+  const handleApply = () => {
+    if (expandedRow !== null) {
+      setGeneratedTables((prev) => [...prev, expandedRow]);
+      setExpandedRow(null);
+    }
+  };
+
+  const handleClear = () => {
+    setExpandedRow(null);
   };
 
   return (
-    <div className="timeline-table-container">
-      <h2 className="timeline-title">Investment Timeline</h2>
-      <Button variant="primary" onClick={addRow} className="mb-3">
-        Add Timeline Row
-      </Button>
-      <Table bordered hover responsive className="timeline-table">
+    <div className="p-4">
+      <h3 className="mb-4">Expandable Table with Options</h3>
+
+      {/* Main Table */}
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Select</th>
+            <th>#</th>
+            <th>Plan Name</th>
+            <th>Return Amount</th>
             <th>Date</th>
-            <th>Return Sum (USDT)</th>
-            <th>Reinvestment Option</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
-            <React.Fragment key={index}>
+          {data.map((row) => (
+            <React.Fragment key={row.id}>
+              {/* Main Row */}
               <tr>
-                <td>{row.date}</td>
-                <td>{row.returnSum}</td>
                 <td>
-                  <Accordion>
-                    <Accordion.Button as={Button} variant="link" eventKey="0">
-                      Expand
-                    </Accordion.Button>
-                    <Accordion.Collapse eventKey="0">
-                      <div className="expandable-content">
-                        <Form.Group controlId={`plan-select-${index}`}>
-                          <Form.Label>Select Plan</Form.Label>
-                          <Form.Control
-                            as="select"
-                            onChange={(e) =>
-                              handlePlanSelect(index, parseInt(e.target.value))
-                            }
-                            value={row.planId || ""}
-                          >
-                            <option value="">Select a plan</option>
-                            {plans
-                              .filter((plan) => plan.amount <= row.returnSum)
-                              .map((plan) => (
-                                <option key={plan.id} value={plan.id}>
-                                  {plan.name} - {plan.amount} USDT
-                                </option>
-                              ))}
-                          </Form.Control>
-                        </Form.Group>
-                      </div>
-                    </Accordion.Collapse>
-                  </Accordion>
+                  <Form.Check
+                    type="radio"
+                    name="rowOption"
+                    checked={expandedRow === row.id}
+                    disabled={expandedRow !== null && expandedRow !== row.id}
+                    onChange={() => handleRowExpand(row.id)}
+                  />
                 </td>
+                <td>{row.id}</td>
+                <td>{row.name}</td>
+                <td>{row.returnAmount}</td>
+                <td>{row.date}</td>
               </tr>
+
+              {/* Expanded Row */}
+              {expandedRow === row.id && (
+                <tr>
+                  <td colSpan={5}>
+                    <div className="p-3 bg-light rounded">
+                      <strong>Details:</strong> {row.details}
+                    </div>
+                  </td>
+                </tr>
+              )}
             </React.Fragment>
           ))}
         </tbody>
       </Table>
+
+      {/* Action Buttons */}
+      <div className="d-flex justify-content-between mb-4">
+        <Button variant="outline-secondary" onClick={handleClear}>
+          Clear
+        </Button>
+        <Button
+          variant="primary"
+          onClick={handleApply}
+          disabled={expandedRow === null}
+        >
+          Apply
+        </Button>
+      </div>
+
+      {/* Generated Tables */}
+      {generatedTables.map((tableId, index) => (
+        <Table striped bordered hover responsive key={index}>
+          <caption>{`T${index + 2}`}</caption>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Plan Name</th>
+              <th>Return Amount</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{data[tableId - 1].id}</td>
+              <td>{data[tableId - 1].name}</td>
+              <td>{data[tableId - 1].returnAmount}</td>
+              <td>{data[tableId - 1].date}</td>
+            </tr>
+          </tbody>
+        </Table>
+      ))}
     </div>
   );
 };
-
-export default TimelineTable;

@@ -1,0 +1,29 @@
+.faq-container {
+  background-color: #f9f9f9;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.faq-accordion .faq-header {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 15px;
+}
+
+.faq-body {
+  padding: 20px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+.faq-accordion .card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+h1 {
+  font-weight: bold;
+  color: #333;
+}

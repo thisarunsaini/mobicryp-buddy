@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Container, Table, Button, Form, Col, Row } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import "./styles/GrowthPlanner.css";
-import FrequencySelect from "./components/plan-calculator/FrequencySelect";
-import { Calculator } from "./components/plan-calculator/Calculator";
 import { Frequency } from "../types/PlanType";
-import TimelineTable from "./components/growth-planner/TimelineTable";
 import { Heading } from "../common/Heading";
+import { TimelineTable } from "./components/growth-planner/TimelineTable";
 
 // Sample Plans Data
 const plans = [

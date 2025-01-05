@@ -24,8 +24,8 @@ const App: React.FC = () => {
             <Route path="/growth" element={<GrowthPlanner />} />
             <Route path="/faqs" element={<FaqPage />} />
             {/* Uncomment these routes when ready */}
-            {/* <Route path="/community" element={<Community />} />
-            <Route path="/faqs" element={<FAQs />} /> */}
+            {/* <Route path="/community" element={<Community />} /> */}
+            {/* <Route path="/contact" element={<Contact />} /> */}
           </Routes>
         </div>
       </BrowserRouter>

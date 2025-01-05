@@ -1,40 +1,20 @@
-.timeline-table-container {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 1200px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .timeline-title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .timeline-table {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .timeline-table th {
-    background-color: #007bff;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .timeline-table td {
-    text-align: center;
-  }
-  
-  .expandable-content {
-    padding: 10px;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
+/* styles/ExpandableTable.css */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.table-caption {
+  font-weight: bold;
+  text-align: left;
+  padding: 0.5rem 1rem;
+}
+
+.btn-outline-secondary,
+.btn-primary {
+  margin: 0 8px;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}

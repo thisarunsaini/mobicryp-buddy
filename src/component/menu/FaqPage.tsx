@@ -17,7 +17,7 @@ const FaqPage: React.FC = () => {
       <Heading
         className="mb-4 pb-4"
         heading="Frequently Asked Questions"
-        subHeader="Get answers to your questions about Mobicryp"
+        subHeading="Get answers to your questions about Mobicryp"
       />
       {faqItems.map((item, index) => (
         <Accordion defaultActiveKey="0" className="faq-accordion" key={index}>
