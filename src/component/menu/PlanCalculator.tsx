@@ -6,6 +6,7 @@ import FrequencySelect from "./components/plan-calculator/FrequencySelect";
 import { Calculator } from "./components/plan-calculator/Calculator";
 import { Frequency } from "../types/PlanType";
 import { urlPath } from "../utils/imageUtils";
+import { Heading } from "../common/Heading";
 
 const PlanCalculator: React.FC = () => {
   const [frequency, setFrequency] = React.useState<Frequency>(Frequency.Daily);
@@ -14,14 +15,11 @@ const PlanCalculator: React.FC = () => {
     <Container className="plan-calculator-container">
       <Row>
         <Col>
-          <div className="title-col-div">
-            <h2 className="text-center">Plan Calculator</h2>
-            <hr></hr>
-            <h6 className="text-center">
-              <UsdtPrice />
-            </h6>
-          </div>
-          <br></br>
+          <Heading
+            className="mb-4 pb-4"
+            heading="Plan Calculator"
+            subHeading={<UsdtPrice />}
+          />
         </Col>
       </Row>
 

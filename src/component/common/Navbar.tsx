@@ -73,7 +73,7 @@ const NavigationBar: React.FC = () => {
               className={({ isActive }) =>
                 `nav-link ${isActive ? "active" : ""}`
               }
-              to="/calculator"
+              to="/growth"
             >
               <FaChartLine /> Growth Planner
             </NavLink>

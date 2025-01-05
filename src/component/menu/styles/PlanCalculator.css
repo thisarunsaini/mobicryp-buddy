@@ -54,11 +54,6 @@
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
-.title-col-div{
-    width: fit-content;
-    margin: auto;
-}
-
 .btn-hover {
     transition: all 0.3s ease;
     border-radius: 8px;

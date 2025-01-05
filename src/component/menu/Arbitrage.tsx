@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import "./styles/Arbitrage.css"; // Custom CSS for styling
 import { ArbitrageModal } from "./components/arbitrage/ArbitrageModal";
+import { Heading } from "../common/Heading";
 
 const slideVariants = {
   hidden: { opacity: 0, x: -100 },
@@ -58,11 +59,11 @@ const Arbitrage: React.FC = () => {
           <>
             <Row>
               <Col>
-                <h2 className="text-center">Arbitrage Model Overview</h2>
-                <h6 className="text-center">
-                  Let's see how Mobicryp Maximizes Profit through Currency
-                  Arbitrage!
-                </h6>
+                <Heading
+                  heading="Arbitrage Model Overview"
+                  subHeading="Let's see how Mobicryp Maximizes Profit through Currency
+                  Arbitrage!"
+                />
               </Col>
             </Row>
 

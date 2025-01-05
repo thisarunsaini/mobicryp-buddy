@@ -1,18 +1,19 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { urlPath } from "../../../utils/imageUtils";
+import { Heading } from "../../../common/Heading";
 
 const PlanCalculatorLandingPage: React.FC = () => {
   return (
     <Container className="plan-calculator-section">
       <Row>
         <Col>
-          <h2>Plan Calculator</h2>
-          <hr></hr>
-          <p>
-            Use our Plan Calculator to estimate your returns based on your
-            investment in USDT.
-          </p>
+          <Heading
+            heading="Plan Calculator"
+            headerPosition="start"
+            subHeading="Use our Plan Calculator to estimate your potential returns based on your USDT investment."
+            subHeaderPosition="justify"
+          />
           <Link to="/calculator">Calculate Now</Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
