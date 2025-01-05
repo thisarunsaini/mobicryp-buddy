@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Table, Button, Form } from "react-bootstrap";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 interface DataRow {
   id: number;
@@ -54,11 +55,10 @@ export const TimelineTable: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      <h3 className="mb-4">Expandable Table with Options</h3>
-
+    <div className="p-4 table-container">
+      <h6>T1</h6>
       {/* Main Table */}
-      <Table striped bordered hover responsive>
+      <Table striped bordered hover responsive className="mt-0 table-dark">
         <thead>
           <tr>
             <th>Select</th>
@@ -73,7 +73,7 @@ export const TimelineTable: React.FC = () => {
             <React.Fragment key={row.id}>
               {/* Main Row */}
               <tr>
-                <td>
+                <td className="d-flex align-items-center justify-content-between">
                   <Form.Check
                     type="radio"
                     name="rowOption"
@@ -81,6 +81,30 @@ export const TimelineTable: React.FC = () => {
                     disabled={expandedRow !== null && expandedRow !== row.id}
                     onChange={() => handleRowExpand(row.id)}
                   />
+                  {expandedRow === row.id ? (
+                    <>
+                      <Button variant="link" onClick={handleClear}>
+                        <FaTimes color="red" />
+                      </Button>
+                      <Button
+                        variant="link"
+                        onClick={handleApply}
+                        disabled={
+                          expandedRow === null && expandedRow !== row.id
+                        }
+                      >
+                        <FaCheck
+                          color={
+                            expandedRow !== null && expandedRow === row.id
+                              ? "green"
+                              : "grey"
+                          }
+                        />
+                      </Button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </td>
                 <td>{row.id}</td>
                 <td>{row.name}</td>
@@ -102,20 +126,6 @@ export const TimelineTable: React.FC = () => {
           ))}
         </tbody>
       </Table>
-
-      {/* Action Buttons */}
-      <div className="d-flex justify-content-between mb-4">
-        <Button variant="outline-secondary" onClick={handleClear}>
-          Clear
-        </Button>
-        <Button
-          variant="primary"
-          onClick={handleApply}
-          disabled={expandedRow === null}
-        >
-          Apply
-        </Button>
-      </div>
 
       {/* Generated Tables */}
       {generatedTables.map((tableId, index) => (
