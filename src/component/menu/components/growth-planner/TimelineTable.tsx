@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Table, Button, Form } from "react-bootstrap";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import FrequencySelect from "../plan-calculator/FrequencySelect";
+import { Frequency } from "../../../types/PlanType";
 
 interface DataRow {
   id: number;
@@ -11,6 +13,10 @@ interface DataRow {
 }
 
 export const TimelineTable: React.FC = () => {
+  const [frequency, setFrequency] = React.useState<Frequency[]>([
+    Frequency.Daily,
+  ]);
+
   // Sample data for the table
   const data: DataRow[] = [
     {
@@ -60,6 +66,11 @@ export const TimelineTable: React.FC = () => {
       {/* Main Table */}
       <Table striped bordered hover responsive className="mt-0 table-dark">
         <thead>
+          <tr>
+            <th colSpan={12}>
+              <FrequencySelect setFrequency={setFrequency} className="" />
+            </th>
+          </tr>
           <tr>
             <th>Select</th>
             <th>#</th>

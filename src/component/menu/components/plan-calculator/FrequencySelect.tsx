@@ -12,7 +12,7 @@ const FrequencySelect: React.FC<any> = (props) => {
   }, [selected]);
 
   return (
-    <div className="multi-switch-button">
+    <div className={`multi-switch-button ${props.className}`}>
       <ButtonGroup className="frequency-button-group d-flex justify-content-center">
         {frequencies.map((frequency, idx) => (
           <ToggleButton
