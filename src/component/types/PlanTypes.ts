@@ -7,6 +7,18 @@ export interface PlanListType {
   [Frequency.Quarterly]?: PlanType[];
 }
 
+export const extractPlans = (planList: PlanListType): PlanType[] => {
+  const plans: PlanType[] = [];
+
+  Object.values(Frequency).forEach((frequency) => {
+    if (planList[frequency]) {
+      plans.push(...(planList[frequency] as PlanType[]));
+    }
+  });
+
+  return plans;
+};
+
 export enum Frequency {
   Daily = "Daily",
   Holding = "Holding",

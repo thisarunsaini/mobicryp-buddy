@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, BrowserRouter, useNavigate } from "react-router-dom";
 import ArbitrageModel from "./component/menu/Arbitrage";
 import UsdtUseCases from "./component/menu/UsdtUseCases";
 import PlanCalculator from "./component/menu/PlanCalculator";
@@ -9,10 +9,21 @@ import { Footer } from "./component/common/Footer";
 import FaqPage from "./component/menu/FaqPage";
 import { GrowthPlanner } from "./component/menu/GrowthPlanner";
 
+const RedirectOnLoad: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/landing");
+  }, []);
+
+  return null; // This component doesn't render anything
+};
+
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter basename="/mobicryp-buddy">
+        <RedirectOnLoad />
         <NavigationBar />
         <div style={{ minHeight: "90vh" }}>
           <Routes>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Table, Button, Form } from "react-bootstrap";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import FrequencySelect from "../plan-calculator/FrequencySelect";
-import { Frequency } from "../../../types/PlanType";
+import { extractPlans, PlanListType } from "../../../types/PlanTypes";
+import { PlantListing } from "../../../constants/jsons/PlanList";
+import { PlanType } from "../../../types/PlanType";
 
 interface DataRow {
   id: number;
@@ -13,10 +14,8 @@ interface DataRow {
 }
 
 export const TimelineTable: React.FC = () => {
-  const [frequency, setFrequency] = React.useState<Frequency[]>([
-    Frequency.Daily,
-  ]);
-
+  const [planList] = React.useState<PlanListType>(PlantListing);
+  const plans = extractPlans(planList);
   // Sample data for the table
   const data: DataRow[] = [
     {
@@ -44,6 +43,7 @@ export const TimelineTable: React.FC = () => {
 
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [generatedTables, setGeneratedTables] = useState<number[]>([]);
+  const [tablePlan, setTablePlan] = useState<DataRow[]>([]);
 
   const handleRowExpand = (id: number) => {
     setExpandedRow((prev) => (prev === id ? null : id));
@@ -62,15 +62,30 @@ export const TimelineTable: React.FC = () => {
 
   return (
     <div className="p-4 table-container">
-      <h6>T1</h6>
+      <div className="d-flex align-items-center justify-content-start">
+        <div>
+          <span className="mr-3">T1</span>
+        </div>
+        <div className="ml-3">
+          <Form.Control
+            as="select"
+            onChange={() => {}}
+            className="input-field styled-input"
+          >
+            <option selected value="0">
+              Select Hub
+            </option>
+            {plans?.map((plan: PlanType, index: number) => (
+              <option key={index + 1} value={plan.hub}>
+                {plan.hubName}
+              </option>
+            )) || <></>}
+          </Form.Control>
+        </div>
+      </div>
       {/* Main Table */}
       <Table striped bordered hover responsive className="mt-0 table-dark">
         <thead>
-          <tr>
-            <th colSpan={12}>
-              <FrequencySelect setFrequency={setFrequency} className="" />
-            </th>
-          </tr>
           <tr>
             <th>Select</th>
             <th>#</th>
@@ -94,11 +109,16 @@ export const TimelineTable: React.FC = () => {
                   />
                   {expandedRow === row.id ? (
                     <>
-                      <Button variant="link" onClick={handleClear}>
-                        <FaTimes color="red" />
+                      <Button
+                        variant="link"
+                        className="m-0 p-0"
+                        onClick={handleClear}
+                      >
+                        <FaTimes color="red" onClick={handleClear} />
                       </Button>
                       <Button
                         variant="link"
+                        className="m-0 p-0"
                         onClick={handleApply}
                         disabled={
                           expandedRow === null && expandedRow !== row.id
@@ -110,6 +130,7 @@ export const TimelineTable: React.FC = () => {
                               ? "green"
                               : "grey"
                           }
+                          onClick={handleClear}
                         />
                       </Button>
                     </>
