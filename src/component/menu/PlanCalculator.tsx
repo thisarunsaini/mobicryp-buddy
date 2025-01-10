@@ -30,10 +30,14 @@ const PlanCalculator: React.FC = () => {
       </Row>
 
       <Row>
-        <Col>
+        <Col md={12} lg={6} xl={6}>
           <Calculator frequency={frequency} />
         </Col>
-        <Col className="d-flex justify-content-center align-items-center">
+        <Col
+          xl={6}
+          lg={6}
+          className="d-none d-xl-flex d-lg-flex justify-content-center align-items-center"
+        >
           <div className="plan-calculator-img-div">
             <Carousel data-bs-theme="dark">
               <Carousel.Item>

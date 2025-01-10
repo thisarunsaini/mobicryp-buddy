@@ -19,7 +19,7 @@ const Arbitrage: React.FC = () => {
     "First: Buy USDT in Dubai, Purchase USDT at ₹100.",
     "Second: Sell USDT in India, Sell USDT at ₹102.",
     "Third: Step 3: Calculate Profit, Profit = (Selling Price - Purchase Price) × Quantity",
-    "Example Calculation: Amount Lent: 1000 USDT, Cost in Dubai: ₹100, Selling Price in India: ₹102, Profit per Trade: ₹2000.",
+    "Example Calculation: Amount Lent: 1000 USDT, Cost in Dubai: ₹100, selling Price in India: ₹102, differnce in prices: ₹2 per USDT, and profit per Trade: ₹2000.",
     "Long-Term Profit Calculation: Day Trade Profit: ₹2000, Total Profit Over 730 Days: ₹14,60,000.",
   ];
 
@@ -43,7 +43,7 @@ const Arbitrage: React.FC = () => {
 
   return (
     <div className="arbitrage-container">
-      <Container>
+      <Container className="arbitrage-content my-5 py-5">
         {currentSlide < slides.length - 1 ? (
           <motion.div
             className="arbitrage-card"
@@ -71,7 +71,10 @@ const Arbitrage: React.FC = () => {
               <Col md={4}>
                 <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
-                    <h5 className="card-title">Step 1: Buy USDT in Dubai</h5>
+                    <h5 className="card-title text-center">
+                      Step 1: Buy USDT in Dubai
+                    </h5>
+                    <hr></hr>
                     <p className="card-text">
                       Purchase USDT at <strong>₹100</strong>.
                     </p>
@@ -81,7 +84,10 @@ const Arbitrage: React.FC = () => {
               <Col md={4}>
                 <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
-                    <h5 className="card-title">Step 2: Sell USDT in India</h5>
+                    <h5 className="card-title text-center">
+                      Step 2: Sell USDT in India
+                    </h5>
+                    <hr></hr>
                     <p className="card-text">
                       Sell USDT at <strong>₹102</strong>.
                     </p>
@@ -91,7 +97,10 @@ const Arbitrage: React.FC = () => {
               <Col md={4}>
                 <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
-                    <h5 className="card-title">Step 3: Calculate Profit</h5>
+                    <h5 className="card-title text-center">
+                      Step 3: Calculate Profit
+                    </h5>
+                    <hr></hr>
                     <p className="card-text">
                       Profit = (Selling Price - Purchase Price) × Quantity
                     </p>
@@ -103,7 +112,10 @@ const Arbitrage: React.FC = () => {
               <Col>
                 <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
-                    <h4 className="card-title">Example Calculation</h4>
+                    <h4 className="card-title text-center">
+                      Example Calculation
+                    </h4>
+                    <hr></hr>
                     <p>
                       <strong>Amount Lent:</strong> 1000 USDT
                     </p>
@@ -114,7 +126,10 @@ const Arbitrage: React.FC = () => {
                       <strong>Selling Price in India:</strong> ₹102
                     </p>
                     <p>
-                      <strong>Profit per Trade:</strong> ₹2000
+                      <strong>Difference in Prices:</strong> ₹2 per USDT
+                    </p>
+                    <p>
+                      <strong>Profit per Trade:</strong> ₹2000 (₹2 * 1000 USDT)
                     </p>
                   </Card.Body>
                 </Card>
@@ -124,15 +139,22 @@ const Arbitrage: React.FC = () => {
               <Col>
                 <Card className="arbitrage-card-main mt-4 shadow border-0">
                   <Card.Body>
-                    <h4 className="card-title">Long-Term Profit Calculation</h4>
+                    <h4 className="card-title text-center">
+                      Long-Term Profit Calculation
+                    </h4>
+                    <hr></hr>
                     <p>
                       <strong>Day Trade Profit:</strong> ₹2000
                     </p>
                     <p>
-                      <strong>Total Profit Over 730 Days:</strong> ₹14,60,000
+                      <strong>Tenure (example):</strong> 2 years (730 days)
+                    </p>
+                    <p>
+                      <strong>Total Profit Over 2 Years:</strong> ₹14,60,000
+                      (₹2000 * 730 days)
                     </p>
                     <Button
-                      variant="secondary"
+                      variant="warning"
                       onClick={handleShow}
                       className="mt-3"
                     >
