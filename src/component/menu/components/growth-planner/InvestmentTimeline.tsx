@@ -7,31 +7,12 @@ import {
   OverlayTrigger,
   Card,
 } from "react-bootstrap";
-import { FaTimesCircle } from "react-icons/fa";
+import { FaTimesCircle, FaChartLine } from "react-icons/fa";
 import "./styles/InvestmentTimeline.css";
 import { PlantListing } from "../../../constants/jsons/PlanList";
-import { PlanType, Frequency } from "../../../types/PlanType";
-
-interface RowType {
-  period: number;
-  returnDate: string;
-  total: number;
-  carriedFromDateMatches?: number; // For display or debugging if needed
-  returnAmount: number; // newly added
-}
-
-interface Timeline {
-  plan: PlanType;
-  rows: RowType[];
-  selectedRow: number | null;
-  // We store which row triggered this table (for reference)
-  triggeredFrom?: {
-    timelineIndex: number;
-    rowIndex: number;
-  };
-  // Keep track of leftover from prior selection (for reference / debug)
-  leftoverUsed?: number;
-}
+import { PlanType } from "../../../types/PlanType";
+import { Timeline } from "../../../types/Timeline";
+import { createTimeline, getFrequencyMonths } from "../../../utils/growthPlannerUtils";
 
 export const InvestmentTimeline: React.FC = () => {
   const [timelines, setTimelines] = useState<Timeline[]>([]);
@@ -43,116 +24,6 @@ export const InvestmentTimeline: React.FC = () => {
   } | null>(null);
   const [filteredPlans, setFilteredPlans] = useState<PlanType[]>([]);
 
-  /**
-   * Create the new timeline from a plan, given:
-   * - leftover (carry) from a previously selected row
-   * - which table/row triggered this new table (to handle date matching, etc.)
-   */
-  const createTimeline = (
-    plan: PlanType,
-    carryAmount: number | null,
-    triggeredBy?: { timelineIndex: number; rowIndex: number }
-  ): Timeline => {
-    // If no carry, we just use plan capacity as the base
-    // but usually, we’re called with a leftover from the prior selection
-    let leftover = carryAmount ?? 0;
-
-    // Subtract capacity + hub from leftover
-    // (Because “hub” is also a cost, as clarified)
-    leftover -= plan.capacity;
-    leftover -= plan.hub;
-
-    // If it’s negative, it means we can’t afford it,
-    // but for simplicity we’ll allow it to go negative
-    // or skip creation. You could handle it differently if needed.
-    if (leftover < 0) {
-      console.warn(
-        `Insufficient leftover (${
-          carryAmount ?? 0
-        }) for plan with capacity + hub = ${plan.capacity + plan.hub}`
-      );
-      leftover = 0;
-    }
-
-    // The frequency in months. For instance, if plan has frequency = HalfYearly => 6
-    const frequencyMonths = getFrequencyMonths(plan.frequency);
-    const totalPeriods = Math.ceil(plan.durationInMonths / frequencyMonths);
-    
-    // Determine base date: if triggered, use the triggering row's returnDate; else current date
-    let baseDate = new Date();
-    if (triggeredBy) {
-      const priorTL = timelines[triggeredBy.timelineIndex];
-      const triggeredRow = priorTL.rows[triggeredBy.rowIndex];
-      baseDate = new Date(triggeredRow.returnDate);
-    }
-
-    let runningTotal = 0;
-    const rows: RowType[] = [];
-
-    for (let i = 0; i < totalPeriods; i++) {
-      // Clone the base date and add frequency months
-      const date = new Date(baseDate);
-      date.setMonth(date.getMonth() + (i + 1) * frequencyMonths);
-
-      const growthThisPeriod = (plan.capacity * plan.growth) / 100 / totalPeriods;
-
-      // Check for date-match carry from prior timeline using returnAmount
-      let matchedReturnAmount = 0;
-      if (triggeredBy) {
-        const priorTL = timelines[triggeredBy.timelineIndex];
-        if (priorTL) {
-          for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
-            const oldRow = priorTL.rows[r];
-            if (oldRow.returnDate === date.toLocaleDateString()) {
-              matchedReturnAmount += oldRow.returnAmount;
-            }
-          }
-        }
-      }
-
-      let rowReturnAmount = 0;
-      if (i === 0) {
-        rowReturnAmount = leftover + growthThisPeriod + matchedReturnAmount;
-      } else {
-        rowReturnAmount = growthThisPeriod + matchedReturnAmount;
-      }
-
-      const rowTotal = (i === 0 ? 0 : runningTotal) + rowReturnAmount;
-      runningTotal = rowTotal;
-
-      rows.push({
-        period: i + 1,
-        returnDate: date.toLocaleDateString(),
-        total: rowTotal,
-        returnAmount: rowReturnAmount,
-      });
-    }
-
-    return {
-      plan,
-      rows,
-      selectedRow: null,
-      triggeredFrom: triggeredBy,
-      leftoverUsed: carryAmount ?? 0,
-    };
-  };
-
-  /** Convert plan frequency to numeric months. */
-  const getFrequencyMonths = (freq: Frequency): number => {
-    switch (freq) {
-      case Frequency.Daily:
-        return 1 / 30; // Example: ~ daily
-      case Frequency.Quarterly:
-        return 3;
-      case Frequency.HalfYearly:
-        return 6;
-      case Frequency.Holding:
-        // Not specified, example of 1 month or something custom:
-        return 1;
-      default:
-        return 6;
-    }
-  };
 
   /** Handle plan selection from the <select>. */
   const handlePlanSelect = (plan: PlanType) => {
@@ -165,7 +36,7 @@ export const InvestmentTimeline: React.FC = () => {
     // If you want to show something else, adjust accordingly.
     const leftoverIfNew = plan.capacity + plan.hub;
 
-    const newTimeline = createTimeline(plan, leftoverIfNew, undefined);
+    const newTimeline = createTimeline(plan, leftoverIfNew, timelines);
     setTimelines((prev) => [...prev, newTimeline]);
   };
 
@@ -246,10 +117,12 @@ export const InvestmentTimeline: React.FC = () => {
     const { leftover, timelineIndex, rowIndex } = pendingReinvest;
 
     // Create new timeline
-    const appendedTimeline = createTimeline(plan, leftover, {
-      timelineIndex,
-      rowIndex,
-    });
+    const appendedTimeline = createTimeline(
+      plan,
+      leftover,
+      timelines,
+      { timelineIndex, rowIndex }
+    );
 
     setTimelines((prev) => [...prev, appendedTimeline]);
 
@@ -434,16 +307,31 @@ export const InvestmentTimeline: React.FC = () => {
       )}
 
       {/* Summary Section */}
-      <div className="summary mt-4 p-3 bg-dark rounded text-white">
-        <h4>Investment Summary</h4>
-        <p>
+      <div
+        className="summary mt-4 p-4 shadow"
+        style={{
+          background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
+          borderRadius: "10px",
+          color: "#fff",
+        }}
+      >
+        <h4 className="mb-3 d-flex align-items-center">
+          <FaChartLine className="me-2" size={24} />
+          Investment Summary
+        </h4>
+        <p className="fs-5">
           <strong>Total Years Spent:</strong> {summary.yearsSpent.toFixed(1)} Years
         </p>
-      <p>
+        <p className="fs-5">
           <strong>Total Investment:</strong> ${summary.totalInvestment.toFixed(2)}
         </p>
-      <p>
+        <p className="fs-5">
           <strong>Total Earnings:</strong> ${summary.totalEarnings.toFixed(2)}
+        </p>
+        <hr style={{ opacity: 0.5 }} />
+        <p className="text-white-50">
+          Your financial growth at a glance. Keep selecting and reinvesting for 
+          greater returns and an even brighter future!
         </p>
       </div>
     </Container>

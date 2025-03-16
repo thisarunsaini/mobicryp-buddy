@@ -5,6 +5,7 @@ export interface PlanListType {
   [Frequency.HalfYearly]?: PlanType[];
   [Frequency.Holding]?: PlanType[];
   [Frequency.Quarterly]?: PlanType[];
+  [Frequency.Yearly]?: PlanType[];
 }
 
 export const extractPlans = (planList: PlanListType): PlanType[] => {
@@ -24,4 +25,5 @@ export enum Frequency {
   Holding = "Holding",
   HalfYearly = "Half Yearly",
   Quarterly = "Quarterly",
+  Yearly = "Yearly",
 }
