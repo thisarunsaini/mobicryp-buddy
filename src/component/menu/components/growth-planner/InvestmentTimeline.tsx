@@ -6,13 +6,15 @@ import {
   Tooltip,
   OverlayTrigger,
   Card,
+  Button,
 } from "react-bootstrap";
-import { FaTimesCircle, FaChartLine } from "react-icons/fa";
+import { FaTimesCircle, FaChartLine, FaInfoCircle } from "react-icons/fa";
 import "./styles/InvestmentTimeline.css";
 import { PlantListing } from "../../../constants/jsons/PlanList";
 import { PlanType } from "../../../types/PlanType";
 import { createTimeline } from "../../../utils/growthPlannerUtils"; // We'll define getFrequencyMonths locally
 import { Timeline } from "../../../types/Timeline";
+import GrowthPlannerModal from "./component/GrowthPlannerModal";
 
 // 1) Add local getFrequencyMonths. We'll pass a boolean if user wants to treat daily as monthly.
 function getFrequencyMonths(freq: string, dailyAsMonthly: boolean = false): number {
@@ -37,6 +39,7 @@ function getFrequencyMonths(freq: string, dailyAsMonthly: boolean = false): numb
 
 export const InvestmentTimeline: React.FC = () => {
   const [timelines, setTimelines] = useState<Timeline[]>([]);
+  const [showModal, setShowModal] = useState(false);
   const [summary, setSummary] = useState({ yearsSpent: 0, totalEarnings: 0, totalInvestment: 0 });
   const [pendingReinvest, setPendingReinvest] = useState<{
     leftover: number;
@@ -218,7 +221,26 @@ export const InvestmentTimeline: React.FC = () => {
 
   return (
     <Container>
+      <GrowthPlannerModal show={showModal} handleClose={() => setShowModal(false)} />
       {/* Plan Selection */}
+      
+        <Button
+          variant="outline-primary"
+          className="mb-3 d-flex align-items-center"
+          style={{
+            borderRadius: "50px",
+            padding: "10px 15px",
+            fontSize: "16px",
+            fontWeight: "bold",
+            display: "flex",
+            gap: "10px",
+          }}
+          onClick={() => setShowModal(true)}
+        >
+          <FaInfoCircle size={20} style={{ color: "#007bff" }} />
+          <span>Growth Planner Info</span>
+        </Button>
+      
       <div className="mb-4">
         <Form.Group controlId="planSelection">
           <Form.Label>Choose a plan:</Form.Label>
