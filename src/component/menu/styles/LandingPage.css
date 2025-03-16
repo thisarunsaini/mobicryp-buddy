@@ -11,6 +11,10 @@
   text-justify: inter-word;
 }
 
+.growth-planner-section {
+  height: max-content;
+}
+
 .image-landing {
   max-height: 300px;
   text-align: center;

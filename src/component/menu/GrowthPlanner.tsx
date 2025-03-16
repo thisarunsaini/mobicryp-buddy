@@ -1,29 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import "./styles/GrowthPlanner.css";
-import { Frequency } from "../types/PlanType";
 import { Heading } from "../common/Heading";
-import { TimelineTable } from "./components/growth-planner/TimelineTable";
-
-// Sample Plans Data
-const plans = [
-  { id: 1, name: "Plan A", minInvestment: 1000, dailyReturn: 10 },
-  { id: 2, name: "Plan B", minInvestment: 5000, dailyReturn: 50 },
-  { id: 3, name: "Plan C", minInvestment: 10000, dailyReturn: 120 },
-];
-
-interface Investment {
-  planId: number;
-  startDate: string;
-  investedAmount: number;
-  returns: number[];
-}
+import { InvestmentTimeline } from "./components/growth-planner/InvestmentTimeline";
 
 export const GrowthPlanner: React.FC = () => {
-  const [timeline, setTimeline] = useState<Investment[]>([]);
-
-  const [frequency, setFrequency] = React.useState<Frequency>(Frequency.Daily);
-
   return (
     <Container className="growth-planner-section">
       <Row>
@@ -35,7 +16,7 @@ export const GrowthPlanner: React.FC = () => {
           />
         </Col>
       </Row>
-      <TimelineTable />
+      <InvestmentTimeline />
     </Container>
   );
 };

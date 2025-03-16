@@ -1,4 +1,8 @@
 
+.navbar-toggler{
+    color: white !important;
+    border-color: white;
+}
 
 .nav-link {
     color: white !important;

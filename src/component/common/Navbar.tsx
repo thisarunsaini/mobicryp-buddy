@@ -7,6 +7,8 @@ import {
   FaInfoCircle,
   FaChartLine,
   FaCogs,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import "./styles/Navbar.css"; // Include your CSS styles
 import { urlPath } from "../utils/imageUtils";
@@ -29,7 +31,7 @@ const NavigationBar: React.FC = () => {
         />
       </NavLink>
       <button className="navbar-toggler" type="button" onClick={toggleNavbar}>
-        <span className="navbar-toggler-icon"></span>
+        {isCollapsed ? <FaBars /> : <FaTimes color="red" />}
       </button>
       <div
         className={`collapse navbar-collapse ${

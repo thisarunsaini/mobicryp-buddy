@@ -17,6 +17,21 @@ export enum Frequency {
   Quarterly = "Quarterly",
 }
 
+export function getFrequencyType(frequency: string): Frequency {
+  switch (frequency) {
+    case Frequency.Daily:
+      return Frequency.Daily;
+    case Frequency.Holding:
+      return Frequency.Holding;
+    case Frequency.HalfYearly:
+      return Frequency.HalfYearly;
+    case Frequency.Quarterly:
+      return Frequency.Quarterly;
+    default:
+      return Frequency.Daily;
+  }
+}
+
 export enum MintType {
   Manual = "manual",
   Auto = "auto",

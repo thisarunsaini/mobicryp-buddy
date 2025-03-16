@@ -1,0 +1,15 @@
+.disabled-row {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  .action-btn{
+    display: flex;
+    justify-content: space-around;
+  }
