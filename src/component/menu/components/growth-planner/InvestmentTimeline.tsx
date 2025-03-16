@@ -11,8 +11,29 @@ import { FaTimesCircle, FaChartLine } from "react-icons/fa";
 import "./styles/InvestmentTimeline.css";
 import { PlantListing } from "../../../constants/jsons/PlanList";
 import { PlanType } from "../../../types/PlanType";
+import { createTimeline } from "../../../utils/growthPlannerUtils"; // We'll define getFrequencyMonths locally
 import { Timeline } from "../../../types/Timeline";
-import { createTimeline, getFrequencyMonths } from "../../../utils/growthPlannerUtils";
+
+// 1) Add local getFrequencyMonths. We'll pass a boolean if user wants to treat daily as monthly.
+function getFrequencyMonths(freq: string, dailyAsMonthly: boolean = false): number {
+  // If frequency is daily but user wants monthly approach, return 1 month:
+  if (freq === "Daily" && dailyAsMonthly) {
+    return 1;
+  }
+  switch (freq) {
+    case "Daily":
+      // By default, daily is handled in createTimeline, but if we do monthly approach, we use 1 above
+      return 1 / 30;
+    case "Quarterly":
+      return 3;
+    case "Half Yearly":
+      return 6;
+    case "Holding":
+      return 1; // Added case for Holding plans
+    default:
+      return 6; // fallback
+  }
+}
 
 export const InvestmentTimeline: React.FC = () => {
   const [timelines, setTimelines] = useState<Timeline[]>([]);
@@ -23,21 +44,41 @@ export const InvestmentTimeline: React.FC = () => {
     rowIndex: number;
   } | null>(null);
   const [filteredPlans, setFilteredPlans] = useState<PlanType[]>([]);
-
+  // 2) A boolean toggle that user can switch to treat daily as monthly
+  const [treatDailyAsMonthly, setTreatDailyAsMonthly] = useState(false);
 
   /** Handle plan selection from the <select>. */
-  const handlePlanSelect = (plan: PlanType) => {
-    // If the user just picks a plan with no leftover from a prior row,
-    // we start the timeline from “0 leftover.” So we effectively start with plan.capacity.
-    // But the code above subtracts plan.capacity from leftover. So if leftover=0, row #1 = 0 - capacity = negative.
-    // That might not be desired. Typically, if the user is buying from scratch, we can treat leftover as plan.capacity + plan.hub.
-    // However, the instructions aren’t totally clear on how to handle a brand-new plan from scratch.
-    // For demonstration, let’s treat leftover = plan.capacity + plan.hub, so the first row is effectively 0.
-    // If you want to show something else, adjust accordingly.
-    const leftoverIfNew = plan.capacity + plan.hub;
+  const handlePlanSelect = (selectedPlan: PlanType | null) => {
+    // 1. Reset everything
+    setTimelines([]);
+    setPendingReinvest(null);
+    setFilteredPlans([]);
 
-    const newTimeline = createTimeline(plan, leftoverIfNew, timelines);
-    setTimelines((prev) => [...prev, newTimeline]);
+    // 2. If user selected "Select a plan" (or null), just reset, do nothing more
+    if (!selectedPlan) {
+      return;
+    }
+
+    // 3. Otherwise, user selected an actual plan => create a brand new timeline
+    const leftoverIfNew = selectedPlan.capacity + selectedPlan.hub;
+    const freqMonths = getFrequencyMonths(selectedPlan.frequency, treatDailyAsMonthly);
+
+    const newTimeline = createTimeline(
+      selectedPlan,
+      leftoverIfNew,
+      [],
+      undefined,
+      freqMonths,
+      treatDailyAsMonthly
+    );
+
+    // Overwrite the entire timelines with the new timeline array
+    setTimelines([newTimeline]);
+
+    // Scroll to bottom
+    setTimeout(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }, 100);
   };
 
   /**
@@ -69,6 +110,16 @@ export const InvestmentTimeline: React.FC = () => {
     // Set our component state for pending reinvest
     setPendingReinvest({ leftover: carryOverAmount, timelineIndex, rowIndex });
     setFilteredPlans(feasiblePlans);
+
+    // => If we have feasible plans, let's auto-scroll to the center
+    if (feasiblePlans.length > 0) {
+      setTimeout(() => {
+        const planSelectorDiv = document.getElementById("plan-reinvest-selector");
+        if (planSelectorDiv) {
+          planSelectorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 100);
+    }
   };
 
   /**
@@ -77,7 +128,6 @@ export const InvestmentTimeline: React.FC = () => {
    */
   const findPlanEligible = (carryAmount: number) => {
     const allPlans: PlanType[] = Object.values(PlantListing).flat();
-    // “total cost” = plan.capacity + plan.hub
     return allPlans.find((p) => p.capacity + p.hub <= carryAmount);
   };
 
@@ -87,7 +137,6 @@ export const InvestmentTimeline: React.FC = () => {
    * it was triggered by this table’s selection.
    */
   const resetSelection = (timelineIndex: number) => {
-    // 1) Clear selectedRow in that timeline
     const updated = timelines.map((tl, idx) => {
       if (idx === timelineIndex) {
         return { ...tl, selectedRow: null };
@@ -95,7 +144,6 @@ export const InvestmentTimeline: React.FC = () => {
       return tl;
     });
 
-    // 2) Remove the last timeline if it was triggered by the same table’s row
     const lastIndex = updated.length - 1;
     if (lastIndex >= 0) {
       const lastTL = updated[lastIndex];
@@ -107,26 +155,37 @@ export const InvestmentTimeline: React.FC = () => {
       }
     }
 
+    // After removing the appended timeline, clear the plan selector
+    setPendingReinvest(null);
+    setFilteredPlans([]);
+
     setTimelines([...updated]);
   };
 
   const handleReinvestmentPlanSelect = (plan: PlanType) => {
     if (!pendingReinvest) return;
 
-    // We have leftover from pendingReinvest
     const { leftover, timelineIndex, rowIndex } = pendingReinvest;
 
-    // Create new timeline
+    const freqMonths = getFrequencyMonths(plan.frequency, treatDailyAsMonthly);
     const appendedTimeline = createTimeline(
       plan,
       leftover,
       timelines,
-      { timelineIndex, rowIndex }
+      { timelineIndex, rowIndex },
+      freqMonths,
+      treatDailyAsMonthly
     );
 
-    setTimelines((prev) => [...prev, appendedTimeline]);
+    setTimelines((prev) => {
+      const updated = [...prev, appendedTimeline];
+      // auto-scroll
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }, 100);
+      return updated;
+    });
 
-    // Clear pending reinvest
     setPendingReinvest(null);
     setFilteredPlans([]);
   };
@@ -166,12 +225,19 @@ export const InvestmentTimeline: React.FC = () => {
           <Form.Select
             onChange={(e) => {
               const hubNum = Number(e.target.value);
-              if (!hubNum) return;
+              if (!hubNum) {
+                // user selected the "Select a plan" placeholder
+                handlePlanSelect(null);
+                return;
+              }
               const selectedPlan = Object.values(PlantListing)
                 .flat()
                 .find((plan) => plan.hub === hubNum);
               if (selectedPlan) {
                 handlePlanSelect(selectedPlan);
+              } else {
+                // If no plan found, also reset/do nothing
+                handlePlanSelect(null);
               }
             }}
           >
@@ -191,20 +257,49 @@ export const InvestmentTimeline: React.FC = () => {
 
       {/* Render each timeline as a card */}
       {timelines.map((timeline, tIndex) => {
-        // If this timeline triggered another table, we consider it “faded”
-        // or if it’s not the very last table in the list
-        // (some people only fade the timeline that “spawned” a new table)
-        // For simplicity, let’s fade any timeline that is not the last:
         const isFaded = tIndex < timelines.length - 1;
+        const isLast = tIndex === timelines.length - 1;
 
         return (
           <Card
             key={tIndex}
-            className={`mt-4 ${isFaded ? "faded" : ""}`}
+            className={`mt-4 ${isFaded ? "faded" : ""} ${isLast ? "fadeIn" : ""}`}
             style={{ opacity: isFaded ? 0.5 : 1 }}
           >
             <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
               {timeline.plan.hubName}
+              {timeline.plan.frequency === "Daily" && (
+                <Form.Check
+                  type="checkbox"
+                  className="ms-3"
+                  label="Treat as Monthly"
+                  checked={timeline.treatDailyAsMonthly ?? false}
+                  onChange={(e) => {
+                    const newVal = e.target.checked;
+                    const freqMonths = getFrequencyMonths(
+                      timeline.plan.frequency,
+                      newVal
+                    );
+                    const reBuilt = createTimeline(
+                      timeline.plan,
+                      timeline.leftoverUsed ?? (timeline.plan.capacity + timeline.plan.hub),
+                      timelines,
+                      timeline.triggeredFrom,
+                      freqMonths,
+                      newVal
+                    );
+                    reBuilt.treatDailyAsMonthly = newVal;
+
+                    const updated = timelines.map((tl, i) => {
+                      if (i === tIndex) {
+                        return reBuilt;
+                      }
+                      return tl;
+                    });
+                    setTimelines(updated);
+                  }}
+                />
+              )}
             </Card.Header>
             <Card.Body>
               <div className="table-responsive">
@@ -232,7 +327,11 @@ export const InvestmentTimeline: React.FC = () => {
                               placement="top"
                               overlay={
                                 <Tooltip>
-                                  Return = leftover (if first row) + plan growth this period + any matched return from prior timeline.
+                                  {`Leftover: $${row.leftoverUsed?.toFixed(2) ?? 0}`}
+                                  <br />
+                                  {`Growth: $${row.growth?.toFixed(2) ?? 0}`}
+                                  <br />
+                                  {`Matched: $${row.matched?.toFixed(2) ?? 0}`}
                                 </Tooltip>
                               }
                             >
@@ -284,7 +383,7 @@ export const InvestmentTimeline: React.FC = () => {
 
       {/* Step 2: Choose a plan from the filtered list */}
       {pendingReinvest && (
-        <div className="mt-3 p-3">
+        <div id="plan-reinvest-selector" className="mt-3 p-3">
           <h5>Choose a plan to re-invest ${pendingReinvest.leftover.toFixed(2)}</h5>
           <Form.Select
             onChange={(e) => {
