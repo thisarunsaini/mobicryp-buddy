@@ -246,15 +246,15 @@ export const InvestmentTimeline: React.FC = () => {
           <Form.Label>Choose a plan:</Form.Label>
           <Form.Select
             onChange={(e) => {
-              const hubNum = Number(e.target.value);
-              if (!hubNum) {
+              const selectedId = Number(e.target.value);
+              if (!selectedId) {
                 // user selected the "Select a plan" placeholder
                 handlePlanSelect(null);
                 return;
               }
               const selectedPlan = Object.values(PlantListing)
                 .flat()
-                .find((plan) => plan.hub === hubNum);
+                .find((plan:PlanType) => plan.planId === selectedId);
               if (selectedPlan) {
                 handlePlanSelect(selectedPlan);
               } else {
@@ -264,15 +264,15 @@ export const InvestmentTimeline: React.FC = () => {
             }}
           >
             <option value="">-- Select a Plan --</option>
-            {Object.entries(PlantListing).map(([frequency, plans]) => (
-              <optgroup key={frequency} label={frequency}>
-                {plans.map((plan: PlanType) => (
-                  <option key={plan.hub} value={plan.hub}>
+            {
+              Object.values(PlantListing)
+                .flat()
+                .map((plan:PlanType) => (
+                  <option key={plan.planId} value={plan.planId}>
                     {plan.hubName}
                   </option>
-                ))}
-              </optgroup>
-            ))}
+                ))
+              }
           </Form.Select>
         </Form.Group>
       </div>
@@ -354,6 +354,12 @@ export const InvestmentTimeline: React.FC = () => {
                                   {`Growth: $${row.growth?.toFixed(2) ?? 0}`}
                                   <br />
                                   {`Matched: $${row.matched?.toFixed(2) ?? 0}`}
+                                  {row.notes && (
+                                  <small className="text-warning d-block mt-1">
+                                    <FaInfoCircle className="me-1" />
+                                    {row.notes}
+                                  </small>
+                                )}
                                 </Tooltip>
                               }
                             >
@@ -409,9 +415,9 @@ export const InvestmentTimeline: React.FC = () => {
           <h5>Choose a plan to re-invest ${pendingReinvest.leftover.toFixed(2)}</h5>
           <Form.Select
             onChange={(e) => {
-              const hubNum = Number(e.target.value);
-              if (!hubNum) return;
-              const selectedPlan = filteredPlans.find((plan) => plan.hub === hubNum);
+              const selectedId = Number(e.target.value);
+              if (!selectedId) return;
+              const selectedPlan = filteredPlans.find((plan) => plan.planId === selectedId);
               if (selectedPlan) {
                 handleReinvestmentPlanSelect(selectedPlan);
               }
@@ -419,7 +425,7 @@ export const InvestmentTimeline: React.FC = () => {
           >
             <option value="">-- Select a Plan --</option>
             {filteredPlans.map((plan) => (
-              <option key={plan.hub} value={plan.hub}>
+              <option key={plan.planId} value={plan.planId}>
                 {plan.hubName}
               </option>
             ))}

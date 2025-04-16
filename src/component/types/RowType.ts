@@ -7,4 +7,6 @@ export interface RowType {
   leftoverUsed?: number; // newly added
   growth?: number;       // newly added
   matched?: number;      // newly added
+  unmatchedCarry?: number; // newly added
+  notes?:string;
 }

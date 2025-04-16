@@ -1,4 +1,5 @@
 export interface PlanType {
+  planId: number;
   hub: number;
   hubName: string;
   capacity: number;

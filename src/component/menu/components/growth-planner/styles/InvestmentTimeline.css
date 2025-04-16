@@ -1,30 +1,30 @@
-.disabled-row {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  
-  .table-responsive {
-    max-height: 400px;
-    overflow-y: auto;
-    width: 100%;
-  }
+.timeline-inactive {
+  opacity: 0.6;
+  background-color: #f8f9fa;
+}
 
-  .action-btn{
-    display: flex;
-    justify-content: space-around;
-  }
+.summary-card {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  border: none;
+}
 
-  .fadeIn {
-    animation: fadeInUp 0.5s ease forwards;
-  }
-  
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(15px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.summary-grid div {
+  text-align: center;
+}
+
+.summary-grid span {
+  display: block;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.summary-grid strong {
+  font-size: 1.2rem;
+}

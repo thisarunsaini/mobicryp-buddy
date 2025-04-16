@@ -35,14 +35,23 @@ export function createTimeline(
 
   // =========== 1) HOLDING FREQUENCY => exactly one row ===========
   if (plan.frequency === "Holding") {
-    // Single row date => baseDate + plan.durationInMonths
     const endDate = new Date(baseDate);
     endDate.setMonth(endDate.getMonth() + plan.durationInMonths);
+    const endDateStr = endDate.toISOString().split("T")[0];
 
     let matchedReturnAmount = 0;
+    let unmatchedLeftoverCarry = 0;
+
     if (triggeredBy) {
-      // If we want date matching, do it here
-      // e.g. see if any oldRow.returnDate == endDate
+      const priorTL = timelines[triggeredBy.timelineIndex];
+      for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
+        const oldRow = priorTL.rows[r];
+        if (oldRow.returnDate == endDateStr) {
+          matchedReturnAmount += oldRow.returnAmount;
+        } else {
+          unmatchedLeftoverCarry += oldRow.returnAmount;
+        }
+      }
     }
 
     const totalGrowth = (plan.capacity * plan.growth) / 100;
@@ -51,12 +60,14 @@ export function createTimeline(
 
     rows.push({
       period: 1,
-      returnDate: endDate.toLocaleDateString(),
+      returnDate: endDateStr,
       total: rowTotal,
       returnAmount: rowReturnAmount,
       leftoverUsed: leftover,
       growth: totalGrowth,
       matched: matchedReturnAmount,
+      unmatchedCarry: unmatchedLeftoverCarry,
+      notes: unmatchedLeftoverCarry > 0 ? "⚠️ Unmatched returns carried forward" : undefined
     });
 
     return {
@@ -88,11 +99,13 @@ export function createTimeline(
 
       // matched returns from old timeline
       let matchedReturnAmount = 0;
+      const currentDateStr = currentDate.toISOString().split('T')[0];
+
       if (triggeredBy) {
         const priorTL = timelines[triggeredBy.timelineIndex];
         for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
           const oldRow = priorTL.rows[r];
-          if (oldRow.returnDate === currentDate.toLocaleDateString()) {
+          if (oldRow.returnDate === currentDateStr) {
             matchedReturnAmount += oldRow.returnAmount;
           }
         }
@@ -110,7 +123,7 @@ export function createTimeline(
 
       rows.push({
         period: i + 1,
-        returnDate: currentDate.toLocaleDateString(),
+        returnDate: currentDateStr,
         total: rowTotal,
         returnAmount: rowReturnAmount,
         leftoverUsed: i === 0 ? leftover : 0,
@@ -143,11 +156,12 @@ export function createTimeline(
       (plan.capacity * plan.growth) / 100 / totalPeriods;
 
     let matchedReturnAmount = 0;
+    const dateStr = date.toISOString().split('T')[0];
     if (triggeredBy) {
       const priorTL = timelines[triggeredBy.timelineIndex];
       for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
         const oldRow = priorTL.rows[r];
-        if (oldRow.returnDate === date.toLocaleDateString()) {
+        if (oldRow.returnDate === dateStr) {
           matchedReturnAmount += oldRow.returnAmount;
         }
       }
@@ -163,7 +177,7 @@ export function createTimeline(
 
     rows.push({
       period: i + 1,
-      returnDate: date.toLocaleDateString(),
+      returnDate: dateStr,
       total: rowTotal,
       returnAmount: rowReturnAmount,
       leftoverUsed: i === 0 ? leftover : 0,

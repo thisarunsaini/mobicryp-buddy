@@ -4,8 +4,9 @@ import { PlanListType } from "../../types/PlanTypes";
 export const PlantListing: PlanListType = {
   Daily: [
     {
+      planId:1,
       hub: 55,
-      hubName: "$55 | 300 | Base Package",
+      hubName: "$55 | 300 | Base Package | "+ Frequency.Daily,
       capacity: 300,
       durationInMonths: 25,
       frequency: Frequency.Daily,
@@ -14,8 +15,9 @@ export const PlantListing: PlanListType = {
       remarks: "Base Package",
     },
     {
+      planId:2,
       hub: 165,
-      hubName: "$165 | 900 | Base Package",
+      hubName: "$165 | 900 | Base Package | "+ Frequency.Daily,
       capacity: 900,
       durationInMonths: 25,
       frequency: Frequency.Daily,
@@ -24,8 +26,9 @@ export const PlantListing: PlanListType = {
       remarks: "Base Package",
     },
     {
+      planId:3,
       hub: 1650,
-      hubName: "$1650 | 16000 | Travel Package",
+      hubName: "$1650 | 16000 | Travel Package | "+ Frequency.Daily,
       capacity: 16000,
       durationInMonths: 25,
       frequency: Frequency.Daily,
@@ -36,8 +39,9 @@ export const PlantListing: PlanListType = {
   ],
   Holding: [
     {
+      planId:4,
       hub: 666,
-      hubName: "$666 | 6666 | Base Package",
+      hubName: "$666 | 6666 | Base Package | "+ Frequency.Holding,
       capacity: 6666,
       durationInMonths: 18,
       growth: 300,
@@ -49,10 +53,11 @@ export const PlantListing: PlanListType = {
   ],
   "Half Yearly": [
     {
+      planId:5,
       hub: 666,
-      hubName: "$666 | 6666 | Base Package",
+      hubName: "$666 | 6666 | Base Package | "+ Frequency.HalfYearly,
       capacity: 6666,
-      durationInMonths: 18,
+      durationInMonths: 24,
       growth: 300,
       frequency: Frequency.HalfYearly,
       type: MintType.Auto,
@@ -60,8 +65,9 @@ export const PlantListing: PlanListType = {
       endDate: "31-12-9999",
     },
     {
+      planId:6,
       hub: 550,
-      hubName: "$550 | $5555 | Kohinoor 2.0",
+      hubName: "$550 | $5555 | Kohinoor 2.0 | "+ Frequency.HalfYearly,
       capacity: 5555,
       durationInMonths: 30,
       growth: 350,
@@ -71,8 +77,9 @@ export const PlantListing: PlanListType = {
       endDate: "31-12-9999",
     },
     {
+      planId:7,
       hub: 900,
-      hubName: "$900 | $5500 | Diamond",
+      hubName: "$900 | $5500 | Diamond | "+ Frequency.HalfYearly,
       capacity: 5500,
       durationInMonths: 30,
       growth: 350,
@@ -84,8 +91,9 @@ export const PlantListing: PlanListType = {
   ],
   Quarterly: [
     {
+      planId:8,
       hub: 666,
-      hubName: "$666 | 6666 | Pearl Package",
+      hubName: "$666 | 6666 | Pearl Package | "+ Frequency.Quarterly,
       capacity: 6666,
       durationInMonths: 18,
       growth: 300,
