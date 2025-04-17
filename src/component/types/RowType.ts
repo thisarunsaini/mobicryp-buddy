@@ -6,12 +6,10 @@ export interface RowType {
   total: number;
   returnAmount: number;
   returnAmountList: number[];
-  carriedFromDateMatches?: number;
   plan:PlanType
   reInvestmentAmount: number; // newly added
   growth?: number;       // newly added
   matched: boolean;     // newly added
-  unmatchedCarry?: number; // newly added
-  notes?:string;
   uniqueId?: string;
+  reInvest:boolean;
 }

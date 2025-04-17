@@ -85,6 +85,16 @@ const NavigationBar: React.FC = () => {
               className={({ isActive }) =>
                 `nav-link ${isActive ? "active" : ""}`
               }
+              to="/plans"
+            >
+              <FaChartLine /> Plans
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active" : ""}`
+              }
               to="/usdt-usecases"
             >
               <FaCogs /> Use Case

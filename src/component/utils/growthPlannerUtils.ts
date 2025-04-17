@@ -66,6 +66,7 @@ function newTimeline(plan: PlanType): DateTimelineRow {
       growth: 0,
       matched: false,
       plan,
+      reInvest: false,
       uniqueId: Math.random().toString(36).substring(2, 6),
     }
 
@@ -86,8 +87,10 @@ function existingTimeline(
 
   const selectedFromDate: Date = new Date(selectedFrom.returnDate);
 
+  markReinvest(timelines, selectedFrom);
+
   // update the investment amount
-  timelines[selectedFrom.returnDate].reInvestmentAmount = (plan.capacity + plan.growth)
+  timelines[selectedFrom.returnDate].reInvestmentAmount = (plan.capacity + plan.hub);
 
   let sum = timelines[selectedFrom.returnDate].total;
   for (let i = 1; i <= rowCount; i++) {
@@ -130,11 +133,30 @@ function existingTimeline(
     timelines[returnDate] = row;
     sum += returnAmount;
   }
-  console.log("existing timeline created:", timelines);
-  return timelines;
+  
+  // sorting the dates
+  let newTimelines: DateTimelineRow = {};
+  const keys = Object.keys(timelines);
+  keys.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  for (let i = 0; i < keys.length; i++) {
+    const date = keys[i];
+    newTimelines[date] = timelines[date];
+  }
+
+  return newTimelines;
 }
 
 export function defragmentReturnAmountList (list: number[]):string {
   const listString = list.map((item, idx) => "$"+item.toFixed(2)+ (idx === list.length - 1 ? "" : " + ")).join("");
   return listString
+}
+
+function markReinvest(timelines: DateTimelineRow, selectedFrom: RowType) {
+  const keys = Object.keys(timelines);
+  for (let i = 0; i < keys.length; i++) {
+    const date = keys[i];
+    timelines[date].reInvest = true;
+    if (date === selectedFrom.returnDate)
+      return;
+    }
 }

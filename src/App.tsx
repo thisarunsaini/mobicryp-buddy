@@ -8,6 +8,7 @@ import NavigationBar from "./component/common/Navbar";
 import { Footer } from "./component/common/Footer";
 import FaqPage from "./component/menu/FaqPage";
 import { GrowthPlanner } from "./component/menu/GrowthPlanner";
+import PlanList from "./component/menu/PlanList";
 
 const RedirectOnLoad: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const App: React.FC = () => {
             <Route path="/usdt-usecases" element={<UsdtUseCases />} />
             <Route path="/calculator" element={<PlanCalculator />} />
             <Route path="/growth" element={<GrowthPlanner />} />
+            <Route path="/plans" element={<PlanList />} />
             <Route path="/faqs" element={<FaqPage />} />
             {/* Uncomment these routes when ready */}
             {/* <Route path="/community" element={<Community />} /> */}

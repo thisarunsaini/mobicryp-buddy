@@ -74,15 +74,18 @@ export const InvestmentTimeline: React.FC = () => {
     const lastDate = new Date(timelines[keys[keys.length - 1]].returnDate);
     const yearDiff = (lastDate.getTime() - firstDate.getTime()) / (1000 * 3600 * 24 * 365);
 
-    // todo: calculate total investment based on the unique plans from the timeline
-    // const totalInvestment = timelines.reduce((sum, t) => sum + t.plan.hub + t.plan.capacity, 0);
+    const uniquePlans = new Set(Object.values(timelines).map(t => t.plan.planId));
+    const totalInvestment = Array.from(uniquePlans).reduce((sum, planId) => {
+      const plan = PlantListing.find(p => p.planId === planId);
+      return plan ? sum + plan.hub + plan.capacity : sum;
+    }, 0);
+    
     const finalTotal = timelines[keys.length - 1]?.total || 0;
 
     setSummary({
       yearsSpent: yearDiff,
       totalEarnings: finalTotal,
-      // totalInvestment: totalInvestment,
-      totalInvestment: 0
+      totalInvestment
     });
   }, [timelines]);
 
@@ -123,7 +126,6 @@ export const InvestmentTimeline: React.FC = () => {
                   <th>Return Date</th>
                   <th>Return Amount</th>
                   <th>Total</th>
-                  <th>Re-Invest</th>
                   <th>Select Term</th>
                 </tr>
               </thead>
@@ -151,9 +153,8 @@ export const InvestmentTimeline: React.FC = () => {
                        :""
                        }</span>
                     </td>
-                    <td>{timelines[date].notes?.includes("Reinvested") ? "Yes" : "-"}</td>
                     <td>
-                      <div className="d-flex align-items-center w-100">
+                      { !timelines[date].reInvest && <div className="d-flex align-items-center w-100">
                         <Form.Check
                           type="radio"
                           name="termSelect"
@@ -167,7 +168,7 @@ export const InvestmentTimeline: React.FC = () => {
                             onClick={() => handleClearSelection(timelines[date], idx)}
                           />
                         }
-                      </div>
+                      </div>}
                     </td>
                   </tr>
                 ))}
