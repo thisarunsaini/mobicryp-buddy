@@ -2,31 +2,51 @@ import { useEffect } from "react";
 import { Card, Row, Col, Button, Form } from "react-bootstrap";
 import { Frequency, PlanType } from "../../../types/PlanType";
 import React from "react";
-import { PlanListType } from "../../../types/PlanTypes";
 import { PlantListing } from "../../../constants/jsons/PlanList";
 import "./styles/Calculator.css";
 import { Link } from "react-router-dom";
 
 export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   const { frequency } = props;
-  const [planList] = React.useState<PlanListType>(PlantListing);
+  const [planList] = React.useState<PlanType[]>(PlantListing);
   const [hubCapacity, setHubCapacity] = React.useState<number | string>("");
   const [duration, setDuration] = React.useState<number | string>("");
   const [grossReturn, setGrossReturn] = React.useState<number | string>("");
   const [mintType, setMintType] = React.useState<string>("");
   const [name, setName] = React.useState<string>("");
   const [selectedHub, setSelectedHub] = React.useState<number>();
+  const [clubbedPlan, setClubbedPlan] = React.useState<any>(null);
   // const [error, setError] = React.useState<string | null>(null);
 
   useEffect(() => {
+    const plans = clubPlansPerFrequency();
+    setClubbedPlan(plans);
+  }, [planList]);
+
+  useEffect(() => {
     clearDependentFields();
+    setClubbedPlan(planList);
   }, [frequency]);
+
+  const clubPlansPerFrequency = () => {
+    const holdingPlans = planList.filter((plan) => plan.frequency === Frequency.Holding);
+    const dailyPlans = planList.filter((plan) => plan.frequency === Frequency.Daily);
+    const quarterlyPlans = planList.filter((plan) => plan.frequency === Frequency.Quarterly);
+    const halfYearlyPlans = planList.filter((plan) => plan.frequency === Frequency.HalfYearly);
+
+    return {
+      [Frequency.Holding]: holdingPlans,
+      [Frequency.Daily]: dailyPlans,
+      [Frequency.Quarterly]: quarterlyPlans,
+      [Frequency.HalfYearly]: halfYearlyPlans,
+    }
+  }
 
   // Update dependent fields when a hub is selected
   const handleHubSelection = (event: any) => {
     clearDependentFields();
     const index = event.target.selectedIndex;
-    const plan: PlanType | null = PlantListing[frequency]?.[index - 1] || null;
+    const plan: PlanType | null = clubbedPlan[frequency]?.[index - 1] || null;
     console.log(plan, index);
 
     if (plan) {
@@ -54,7 +74,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
       <Form>
         <Row className="mb-4">
           <Col>
-            <Form.Group controlId="hubSelection">
+            {/* <Form.Group controlId="hubSelection">
               <Form.Label>Hub</Form.Label>
               <Form.Control
                 as="select"
@@ -65,13 +85,13 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
                 <option selected value="0">
                   Select Hub
                 </option>
-                {planList[frequency]?.map((plan: PlanType, index: number) => (
+                {clubbedPlan[frequency]?.map((plan: PlanType, index: number) => (
                   <option key={index + 1} value={plan.hub}>
                     {plan.hubName}
                   </option>
                 )) || <></>}
               </Form.Control>
-            </Form.Group>
+            </Form.Group> */}
           </Col>
         </Row>
 

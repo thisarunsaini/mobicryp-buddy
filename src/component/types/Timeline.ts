@@ -12,3 +12,7 @@ export interface Timeline {
   leftoverUsed?: number;
   treatDailyAsMonthly?: boolean; // newly added
 }
+
+export interface DateTimelineRow {
+  [Date: string]: RowType
+}

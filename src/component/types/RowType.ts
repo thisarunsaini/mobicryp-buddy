@@ -1,12 +1,17 @@
+import { PlanType } from "./PlanType";
+
 export interface RowType {
-  period: number;
+  planNo: number;
   returnDate: string;
   total: number;
-  carriedFromDateMatches?: number; // For display or debugging if needed
-  returnAmount: number; // newly added
-  leftoverUsed?: number; // newly added
+  returnAmount: number;
+  returnAmountList: number[];
+  carriedFromDateMatches?: number;
+  plan:PlanType
+  reInvestmentAmount: number; // newly added
   growth?: number;       // newly added
-  matched?: number;      // newly added
+  matched: boolean;     // newly added
   unmatchedCarry?: number; // newly added
   notes?:string;
+  uniqueId?: string;
 }

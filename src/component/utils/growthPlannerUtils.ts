@@ -1,197 +1,140 @@
-import { PlanType } from "../types/PlanType"; 
-import { Timeline } from "../types/Timeline";
+import { PlanType } from "../types/PlanType";
+import { DateTimelineRow, Timeline } from "../types/Timeline";
 import { RowType } from "../types/RowType";
 
-/** day difference helper */
-function differenceInDays(start: Date, end: Date): number {
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const diff = end.getTime() - start.getTime();
-  return Math.ceil(diff / msPerDay) < 0 ? 0 : Math.ceil(diff / msPerDay);
+/** Get frequency in months */
+function getFrequencyMonths(frequency: string, months: number): number {
+  switch (frequency) {
+    case "Daily":
+      return 1; // handled separately
+    case "Quarterly":
+      return 3;
+    case "Half Yearly":
+      return 6;
+    case "Holding":
+      return months; // special case
+    default:
+      return 1; // treat unknowns as monthly
+  }
 }
 
+function getRowCount(plan: PlanType): number {
+  const frequencyMonths = getFrequencyMonths(plan.frequency, plan.durationInMonths);
+  return Math.ceil(plan.durationInMonths / frequencyMonths);
+}
+
+function getReturnAmount(plan: PlanType, rowCount: number): number {
+  return plan.capacity * (plan.growth / (100 * rowCount));
+}
+
+/** Create a timeline based on plan and previous timelines */
 export function createTimeline(
   plan: PlanType,
-  carryAmount: number | null,
-  timelines: Timeline[],
-  triggeredBy?: { timelineIndex: number; rowIndex: number },
-  freqMonths: number = 6,
-  treatDailyAsMonthly: boolean = false
-): Timeline {
-  let leftover = carryAmount ?? 0;
-  leftover -= plan.capacity;
-  leftover -= plan.hub;
-  if (leftover < 0) leftover = 0;
-
-  // Base date: if triggered, use triggered row’s return date
-  let baseDate = new Date();
-  if (triggeredBy) {
-    const priorTL = timelines[triggeredBy.timelineIndex];
-    const triggeredRow = priorTL.rows[triggeredBy.rowIndex];
-    baseDate = new Date(triggeredRow.returnDate);
+  selectedFrom: RowType | null,
+  timelines: DateTimelineRow
+): DateTimelineRow {
+  // new timeline
+  if (timelines === null || Object.keys(timelines).length === 0 || selectedFrom === null) {
+    return newTimeline(plan);
   }
+  // existing timeline
+  else {
+    return existingTimeline(plan, selectedFrom, timelines);
+  }
+}
 
-  const rows: RowType[] = [];
-  const isTrueDaily = plan.frequency === "Daily" && !treatDailyAsMonthly;
+function newTimeline(plan: PlanType): DateTimelineRow {
+  console.log("Creating new timeline for plan:", plan);
+  const rowCount = getRowCount(plan);
+  const returnAmount: number = getReturnAmount(plan, rowCount);
 
-  // =========== 1) HOLDING FREQUENCY => exactly one row ===========
-  if (plan.frequency === "Holding") {
-    const endDate = new Date(baseDate);
-    endDate.setMonth(endDate.getMonth() + plan.durationInMonths);
-    const endDateStr = endDate.toISOString().split("T")[0];
+  const dateAndRows: DateTimelineRow = {};
+  const currentDate: Date = new Date();
 
-    let matchedReturnAmount = 0;
-    let unmatchedLeftoverCarry = 0;
+  let sum = 0;
+  for (let i = 1; i <= rowCount; i++) {
 
-    if (triggeredBy) {
-      const priorTL = timelines[triggeredBy.timelineIndex];
-      for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
-        const oldRow = priorTL.rows[r];
-        if (oldRow.returnDate == endDateStr) {
-          matchedReturnAmount += oldRow.returnAmount;
-        } else {
-          unmatchedLeftoverCarry += oldRow.returnAmount;
-        }
-      }
-    }
-
-    const totalGrowth = (plan.capacity * plan.growth) / 100;
-    const rowReturnAmount = leftover + totalGrowth + matchedReturnAmount;
-    const rowTotal = rowReturnAmount;
-
-    rows.push({
-      period: 1,
-      returnDate: endDateStr,
-      total: rowTotal,
-      returnAmount: rowReturnAmount,
-      leftoverUsed: leftover,
-      growth: totalGrowth,
-      matched: matchedReturnAmount,
-      unmatchedCarry: unmatchedLeftoverCarry,
-      notes: unmatchedLeftoverCarry > 0 ? "⚠️ Unmatched returns carried forward" : undefined
-    });
-
-    return {
+    currentDate.setMonth(currentDate.getMonth() + getFrequencyMonths(plan.frequency, plan.durationInMonths));
+    const returnDate = currentDate.toISOString().split("T")[0];
+    const row: RowType = {
+      planNo: 1,
+      returnDate,
+      returnAmount,
+      total: sum + returnAmount,
+      reInvestmentAmount: 0,
+      returnAmountList: [returnAmount],
+      growth: 0,
+      matched: false,
       plan,
-      rows,
-      selectedRow: null,
-      triggeredFrom: triggeredBy,
-      leftoverUsed: carryAmount ?? 0,
-      treatDailyAsMonthly,
-    };
-  }
-
-  // =========== 2) DAILY FREQUENCY => day-by-day ===========
-  if (isTrueDaily) {
-    // day-by-day iteration from baseDate to (baseDate + plan.durationInMonths)
-    const endDate = new Date(baseDate);
-    endDate.setMonth(endDate.getMonth() + plan.durationInMonths);
-
-    const totalDays = differenceInDays(baseDate, endDate);
-    let runningTotal = 0;
-    let currentDate = new Date(baseDate);
-
-    for (let i = 0; i < totalDays; i++) {
-      if (i > 0) {
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-      // plan's total growth spread over totalDays
-      const dailyGrowth = (plan.capacity * plan.growth) / 100 / totalDays;
-
-      // matched returns from old timeline
-      let matchedReturnAmount = 0;
-      const currentDateStr = currentDate.toISOString().split('T')[0];
-
-      if (triggeredBy) {
-        const priorTL = timelines[triggeredBy.timelineIndex];
-        for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
-          const oldRow = priorTL.rows[r];
-          if (oldRow.returnDate === currentDateStr) {
-            matchedReturnAmount += oldRow.returnAmount;
-          }
-        }
-      }
-
-      // First row: leftover + dailyGrowth + matched
-      // subsequent: dailyGrowth + matched
-      const rowReturnAmount =
-        i === 0
-          ? leftover + dailyGrowth + matchedReturnAmount
-          : dailyGrowth + matchedReturnAmount;
-
-      const rowTotal = (i === 0 ? 0 : runningTotal) + rowReturnAmount;
-      runningTotal = rowTotal;
-
-      rows.push({
-        period: i + 1,
-        returnDate: currentDateStr,
-        total: rowTotal,
-        returnAmount: rowReturnAmount,
-        leftoverUsed: i === 0 ? leftover : 0,
-        growth: dailyGrowth,
-        matched: matchedReturnAmount,
-      });
+      uniqueId: Math.random().toString(36).substring(2, 6),
     }
 
-    return {
-      plan,
-      rows,
-      selectedRow: null,
-      triggeredFrom: triggeredBy,
-      leftoverUsed: carryAmount ?? 0,
-      treatDailyAsMonthly,
-    };
+    dateAndRows[returnDate] = row;
+    sum += returnAmount;
   }
+  return dateAndRows;
+}
 
-  // =========== 3) MONTHLY (or freqMonths) approach ===========
-  const totalPeriods = Math.ceil(plan.durationInMonths / freqMonths);
-  let runningTotal = 0;
+function existingTimeline(
+  plan: PlanType,
+  selectedFrom: RowType,
+  timelines: DateTimelineRow
+): DateTimelineRow {
 
-  for (let i = 0; i < totalPeriods; i++) {
-    // date = baseDate + (i+1)*freqMonths
-    const date = new Date(baseDate);
-    date.setMonth(date.getMonth() + (i + 1) * freqMonths);
+  const rowCount = getRowCount(plan);
+  const returnAmount: number = getReturnAmount(plan, rowCount);
 
-    // plan's total growth among totalPeriods
-    const growthThisPeriod =
-      (plan.capacity * plan.growth) / 100 / totalPeriods;
+  const selectedFromDate: Date = new Date(selectedFrom.returnDate);
 
-    let matchedReturnAmount = 0;
-    const dateStr = date.toISOString().split('T')[0];
-    if (triggeredBy) {
-      const priorTL = timelines[triggeredBy.timelineIndex];
-      for (let r = triggeredBy.rowIndex + 1; r < priorTL.rows.length; r++) {
-        const oldRow = priorTL.rows[r];
-        if (oldRow.returnDate === dateStr) {
-          matchedReturnAmount += oldRow.returnAmount;
-        }
+  // update the investment amount
+  timelines[selectedFrom.returnDate].reInvestmentAmount = (plan.capacity + plan.growth)
+
+  let sum = timelines[selectedFrom.returnDate].total;
+  for (let i = 1; i <= rowCount; i++) {
+
+    selectedFromDate.setMonth(selectedFromDate.getMonth() + getFrequencyMonths(plan.frequency, plan.durationInMonths));
+    const returnDate = selectedFromDate.toISOString().split("T")[0];
+    let row: any = {};
+    if (timelines[returnDate] == null) {
+      row = {
+        planNo: 1 + selectedFrom.planNo,
+        returnDate,
+        returnAmount,
+        total: sum + returnAmount,
+        leftoverUsed: 0,
+        growth: 0,
+        matched: false,
+        plan,
+        returnAmountList: [returnAmount],
+        uniqueId: Math.random().toString(36).substring(2, 6),
       }
     }
+    else {
+      const returnAmountList = timelines[returnDate].returnAmountList;
+      returnAmountList.push(returnAmount);
+      row = {
+        planNo: 1 + selectedFrom.planNo,
+        returnDate,
+        returnAmount: timelines[returnDate].returnAmount + returnAmount,
+        total: sum + returnAmount+ timelines[returnDate].returnAmount,
+        leftoverUsed: 0,
+        growth: 0,
+        matched: true,
+        plan,
+        returnAmountList,
+        uniqueId: Math.random().toString(36).substring(2, 6),
+      }
+      sum += timelines[returnDate].returnAmount;
+    }
 
-    const rowReturnAmount =
-      i === 0
-        ? leftover + growthThisPeriod + matchedReturnAmount
-        : growthThisPeriod + matchedReturnAmount;
-
-    const rowTotal = (i === 0 ? 0 : runningTotal) + rowReturnAmount;
-    runningTotal = rowTotal;
-
-    rows.push({
-      period: i + 1,
-      returnDate: dateStr,
-      total: rowTotal,
-      returnAmount: rowReturnAmount,
-      leftoverUsed: i === 0 ? leftover : 0,
-      growth: growthThisPeriod,
-      matched: matchedReturnAmount,
-    });
+    timelines[returnDate] = row;
+    sum += returnAmount;
   }
+  console.log("existing timeline created:", timelines);
+  return timelines;
+}
 
-  return {
-    plan,
-    rows,
-    selectedRow: null,
-    triggeredFrom: triggeredBy,
-    leftoverUsed: carryAmount ?? 0,
-    treatDailyAsMonthly,
-  };
+export function defragmentReturnAmountList (list: number[]):string {
+  const listString = list.map((item, idx) => "$"+item.toFixed(2)+ (idx === list.length - 1 ? "" : " + ")).join("");
+  return listString
 }
