@@ -5,10 +5,10 @@ import React from "react";
 import { PlantListing } from "../../../constants/jsons/PlanList";
 import "./styles/Calculator.css";
 import { Link } from "react-router-dom";
+import { CLIENT_PLANS } from "../../../constants/commonConstants";
 
 export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   const { frequency } = props;
-  const [planList] = React.useState<PlanType[]>(PlantListing);
   const [clubbedPlan, setClubbedPlan] = React.useState<any>(null);
   //  plan properties
   const [hubCapacity, setHubCapacity] = React.useState<number | string>("");
@@ -20,18 +20,16 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   // ends here
 
   useEffect(() => {
-    if(planList.length === 0) return
-
-    const plans = clubPlansPerFrequency();
+    const clientPlans:PlanType[] = JSON.parse(sessionStorage.getItem(CLIENT_PLANS)?? "[]");
+    const plans = clubPlansPerFrequency(clientPlans);
     setClubbedPlan(plans);
-
-  }, [planList]);
+  }, []);
 
   useEffect(() => {
     clearDependentFields();
   }, [frequency]);
 
-  const clubPlansPerFrequency = () => {
+  const clubPlansPerFrequency = (planList:PlanType[]) => {
     const holdingPlans = planList.filter((plan) => plan.frequency === Frequency.Holding);
     const dailyPlans = planList.filter((plan) => plan.frequency === Frequency.Daily);
     const quarterlyPlans = planList.filter((plan) => plan.frequency === Frequency.Quarterly);
@@ -50,7 +48,6 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
     clearDependentFields();
     const index = event.target.selectedIndex;
     const plan: PlanType | null = clubbedPlan[frequency]?.[index - 1] || null;
-    console.log(plan, index);
 
     if (plan) {
       setSelectedHub(plan.hub);
@@ -74,7 +71,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
     setResult("");
   };
 
-  return frequency && planList && clubbedPlan ? (
+  return frequency && clubbedPlan ? (
     <Card.Body className="p-4">
       <Form>
         <Row className="mb-4">

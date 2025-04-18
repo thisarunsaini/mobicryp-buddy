@@ -9,6 +9,8 @@ import { Footer } from "./component/common/Footer";
 import FaqPage from "./component/menu/FaqPage";
 import { GrowthPlanner } from "./component/menu/GrowthPlanner";
 import PlanList from "./component/menu/PlanList";
+import { CLIENT_PLANS } from "./component/constants/commonConstants";
+import { PlantListing } from "./component/constants/jsons/PlanList";
 
 const RedirectOnLoad: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,11 @@ const RedirectOnLoad: React.FC = () => {
 };
 
 const App: React.FC = () => {
+
+  useEffect(() => {
+    sessionStorage.setItem(CLIENT_PLANS, JSON.stringify(PlantListing));
+  }, [PlanList]);
+
   return (
     <>
       <BrowserRouter basename="/mobicryp-buddy">

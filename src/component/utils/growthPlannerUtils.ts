@@ -34,6 +34,7 @@ export function createTimeline(
   timelines: DateTimelineRow
 ): DateTimelineRow {
   // new timeline
+
   if (timelines === null || Object.keys(timelines).length === 0 || selectedFrom === null) {
     return newTimeline(plan);
   }
@@ -44,7 +45,6 @@ export function createTimeline(
 }
 
 function newTimeline(plan: PlanType): DateTimelineRow {
-  console.log("Creating new timeline for plan:", plan);
   const rowCount = getRowCount(plan);
   const returnAmount: number = getReturnAmount(plan, rowCount);
 

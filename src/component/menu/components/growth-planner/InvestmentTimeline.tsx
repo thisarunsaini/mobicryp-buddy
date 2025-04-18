@@ -10,24 +10,30 @@ import {
 } from "react-bootstrap";
 import { FaChartLine, FaInfoCircle, FaTimesCircle } from "react-icons/fa";
 import "./styles/InvestmentTimeline.css";
-import { PlantListing } from "../../../constants/jsons/PlanList";
 import { PlanType } from "../../../types/PlanType";
 import { createTimeline, defragmentReturnAmountList } from "../../../utils/growthPlannerUtils";
 import { DateTimelineRow } from "../../../types/Timeline";
 import GrowthPlannerModal from "./component/GrowthPlannerModal";
 import { RowType } from "../../../types/RowType";
+import { CLIENT_PLANS } from "../../../constants/commonConstants";
 
 export const InvestmentTimeline: React.FC = () => {
   const [timelines, setTimelines] = useState<DateTimelineRow>({});
   const [backupTimelines, setBackupTimelines] = useState<DateTimelineRow>({});
-  const [summary, setSummary] = useState({ yearsSpent: 0, totalEarnings: 0, totalInvestment: 0 });
   const [selectedRow, setSelectedRow] = useState<RowType | null>();
   const [filteredPlans, setFilteredPlans] = useState<PlanType[]>([]);
+  const [PlantListing, setPlantListing] = useState<PlanType[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [totalInvestment, setTotalInvestment] = useState(0);
+  const [totalEarnings, setTotalEarnings] = useState<string | number>(0);
+  const [yearsSpent, setYearsSpent] = useState("No Plans Selected");
+
+  const scrollToBottom = () => { setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }), 100); }
+
 
   const handlePlanSelect = (planId: any) => {
-    const selectedPlan = PlantListing.find(p => p.planId === planId);
-    if (!selectedPlan ) return;
+    const selectedPlan = PlantListing.find(p => p.planId == planId);
+    if (!selectedPlan) return;
 
     const newTimeline = createTimeline(
       selectedPlan,
@@ -37,7 +43,8 @@ export const InvestmentTimeline: React.FC = () => {
 
     setTimelines(newTimeline);
     setBackupTimelines(newTimeline);
-    setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }), 100);
+    setTotalInvestment(selectedPlan.capacity+selectedPlan.hub);
+    scrollToBottom();
   };
 
   const handleRowSelection = (row: RowType) => {
@@ -63,34 +70,48 @@ export const InvestmentTimeline: React.FC = () => {
     ));
     setSelectedRow(null);
     setFilteredPlans([]);
+    setTotalInvestment(plan.capacity+plan.hub+totalInvestment);
+    scrollToBottom();
   };
 
   useEffect(() => {
     const keys = Object.keys(timelines);
 
-    if (keys.length === 0) return;
+    if (keys.length === 0 || timelines == null){
+      setTotalInvestment(0);
+      setTotalEarnings(0);
+      setYearsSpent("No Plans Selected");
+      return;
+    }
 
-    const firstDate = new Date(new Date().toLocaleDateString("en-IN"));
+    const firstDate = new Date(new Date());
     const lastDate = new Date(timelines[keys[keys.length - 1]].returnDate);
-    const yearDiff = (lastDate.getTime() - firstDate.getTime()) / (1000 * 3600 * 24 * 365);
 
-    const uniquePlans = new Set(Object.values(timelines).map(t => t.plan.planId));
-    const totalInvestment = Array.from(uniquePlans).reduce((sum, planId) => {
-      const plan = PlantListing.find(p => p.planId === planId);
-      return plan ? sum + plan.hub + plan.capacity : sum;
-    }, 0);
-    
-    const finalTotal = timelines[keys.length - 1]?.total || 0;
+    let years = lastDate.getFullYear() - firstDate.getFullYear();
+    let months = lastDate.getMonth() - firstDate.getMonth();
 
-    setSummary({
-      yearsSpent: yearDiff,
-      totalEarnings: finalTotal,
-      totalInvestment
-    });
+    // Adjust if months go negative
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    const yearMonthDisplay = `${years} year(s) and ${months} month(s)`;
+    const finalTotal = timelines[keys[keys.length - 1]]?.total || 0;
+
+    setTotalEarnings(finalTotal.toFixed(2));
+    setYearsSpent(yearMonthDisplay)
   }, [timelines]);
 
-  return (
-    <Container className="my-4">
+
+  useEffect(() => {
+    const clientPlans: PlanType[] = JSON.parse(sessionStorage.getItem(CLIENT_PLANS) ?? "[]");
+    setPlantListing(clientPlans)
+    console.log("clientPlans", clientPlans);
+  }, []);
+
+  return (<>
+    {PlantListing?.length > 0 && <Container className="my-4">
       <GrowthPlannerModal show={showModal} handleClose={() => setShowModal(false)} />
       <Button variant="info" className="mb-3" onClick={() => setShowModal(true)}>
         <FaInfoCircle className="me-2" /> Growth Planner Info
@@ -147,14 +168,14 @@ export const InvestmentTimeline: React.FC = () => {
                         <span>${timelines[date].returnAmount.toFixed(2)}</span>
                       </OverlayTrigger>
                     </td>
-                    <td>${timelines[date].total.toFixed(2)} 
-                      <span className="text-danger"> {(timelines[date].reInvestmentAmount && timelines[date].reInvestmentAmount > 0)?
-                       " -$"+timelines[date].reInvestmentAmount.toFixed(2)
-                       :""
-                       }</span>
+                    <td>${timelines[date].total.toFixed(2)}
+                      <span className="text-danger"> {(timelines[date].reInvestmentAmount && timelines[date].reInvestmentAmount > 0) ?
+                        " -$" + timelines[date].reInvestmentAmount.toFixed(2)
+                        : ""
+                      }</span>
                     </td>
                     <td>
-                      { !timelines[date].reInvest && <div className="d-flex align-items-center w-100">
+                      {!timelines[date].reInvest && <div className="d-flex align-items-center w-100">
                         <Form.Check
                           type="radio"
                           name="termSelect"
@@ -204,11 +225,15 @@ export const InvestmentTimeline: React.FC = () => {
       <Card className="mt-4 bg-dark text-white">
         <Card.Body>
           <h4 className="mb-3"><FaChartLine className="me-2" />Investment Summary</h4>
-          <p><strong>Total Years Spent:</strong> {summary.yearsSpent.toFixed(1)} years</p>
-          <p><strong>Total Investment:</strong> ${summary.totalInvestment.toFixed(2)}</p>
-          <p><strong>Total Earnings:</strong> ${summary.totalEarnings.toFixed(2)}</p>
+          <p><strong>Total Span:</strong> {yearsSpent}</p>
+          <p><strong>Total Investment:</strong> ${totalInvestment}</p>
+          {/* <p><strong>Total Earnings:</strong> ${parseInt(totalEarnings) - (
+            (timelines[Object.keys(timelines)[0]].plan.capacity
+            + timelines[Object.keys(timelines)[0]].plan.hub).toFixed(2)
+            )}</p> */}
         </Card.Body>
       </Card>
-    </Container>
+    </Container>}
+  </>
   );
 };
