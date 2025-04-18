@@ -1,5 +1,5 @@
 import { PlanType } from "../types/PlanType";
-import { DateTimelineRow, Timeline } from "../types/Timeline";
+import { DateTimelineRow } from "../types/Timeline";
 import { RowType } from "../types/RowType";
 
 /** Get frequency in months */

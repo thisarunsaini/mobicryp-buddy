@@ -9,23 +9,26 @@ import { Link } from "react-router-dom";
 export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   const { frequency } = props;
   const [planList] = React.useState<PlanType[]>(PlantListing);
+  const [clubbedPlan, setClubbedPlan] = React.useState<any>(null);
+  //  plan properties
   const [hubCapacity, setHubCapacity] = React.useState<number | string>("");
   const [duration, setDuration] = React.useState<number | string>("");
   const [grossReturn, setGrossReturn] = React.useState<number | string>("");
   const [mintType, setMintType] = React.useState<string>("");
-  const [name, setName] = React.useState<string>("");
-  const [selectedHub, setSelectedHub] = React.useState<number>();
-  const [clubbedPlan, setClubbedPlan] = React.useState<any>(null);
-  // const [error, setError] = React.useState<string | null>(null);
+  const [selectedHub, setSelectedHub] = React.useState<number | string>("");
+  const [result, setResult] = React.useState<string>("");
+  // ends here
 
   useEffect(() => {
+    if(planList.length === 0) return
+
     const plans = clubPlansPerFrequency();
     setClubbedPlan(plans);
+
   }, [planList]);
 
   useEffect(() => {
     clearDependentFields();
-    setClubbedPlan(planList);
   }, [frequency]);
 
   const clubPlansPerFrequency = () => {
@@ -33,7 +36,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
     const dailyPlans = planList.filter((plan) => plan.frequency === Frequency.Daily);
     const quarterlyPlans = planList.filter((plan) => plan.frequency === Frequency.Quarterly);
     const halfYearlyPlans = planList.filter((plan) => plan.frequency === Frequency.HalfYearly);
-
+    
     return {
       [Frequency.Holding]: holdingPlans,
       [Frequency.Daily]: dailyPlans,
@@ -55,7 +58,9 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
       setDuration(plan.durationInMonths);
       setGrossReturn(plan.growth);
       setMintType(plan.type);
-      setName(plan.hubName);
+      setResult(
+        `$${plan.capacity*plan.growth/100} | ${(plan.durationInMonths/12).toFixed(0)+"."+plan.durationInMonths%12} Year(s)`
+      );
     }
   };
 
@@ -65,17 +70,17 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
     setDuration("");
     setGrossReturn("");
     setMintType("");
-    setName("");
-    setSelectedHub(0);
+    setSelectedHub("");
+    setResult("");
   };
 
-  return frequency && planList ? (
+  return frequency && planList && clubbedPlan ? (
     <Card.Body className="p-4">
       <Form>
         <Row className="mb-4">
           <Col>
-            {/* <Form.Group controlId="hubSelection">
-              <Form.Label>Hub</Form.Label>
+            <Form.Group controlId="hubSelection">
+              <Form.Label>Plan Name</Form.Label>
               <Form.Control
                 as="select"
                 onChange={handleHubSelection}
@@ -83,7 +88,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
                 value={selectedHub}
               >
                 <option selected value="0">
-                  Select Hub
+                  Select Plan
                 </option>
                 {clubbedPlan[frequency]?.map((plan: PlanType, index: number) => (
                   <option key={index + 1} value={plan.hub}>
@@ -91,28 +96,29 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
                   </option>
                 )) || <></>}
               </Form.Control>
-            </Form.Group> */}
+            </Form.Group>
           </Col>
         </Row>
 
         <Row className="mb-4">
           <Col md={6}>
-            <Form.Group controlId="hubCapacity">
-              <Form.Label>Capacity (USDT)</Form.Label>
+          <Form.Group controlId="name">
+              <Form.Label>Hub</Form.Label>
               <Form.Control
                 type="text"
-                value={hubCapacity}
+                value={selectedHub}
                 readOnly
                 className="input-field styled-input"
               />
             </Form.Group>
+            
           </Col>
           <Col md={6}>
-            <Form.Group controlId="duration">
-              <Form.Label>Duration (Months)</Form.Label>
+          <Form.Group controlId="hubCapacity">
+              <Form.Label>Capacity (USDT)</Form.Label>
               <Form.Control
                 type="text"
-                value={duration}
+                value={hubCapacity}
                 readOnly
                 className="input-field styled-input"
               />
@@ -133,7 +139,22 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
             </Form.Group>
           </Col>
           <Col md={6}>
-            <Form.Group controlId="mintType">
+          <Form.Group controlId="duration">
+              <Form.Label>Duration (Months)</Form.Label>
+              <Form.Control
+                type="text"
+                value={duration}
+                readOnly
+                className="input-field styled-input"
+              />
+            </Form.Group>
+            
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <Col md={6}>
+          <Form.Group controlId="mintType">
               <Form.Label>Mint Type</Form.Label>
               <Form.Control
                 type="text"
@@ -143,15 +164,12 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
               />
             </Form.Group>
           </Col>
-        </Row>
-
-        <Row className="mb-4">
-          <Col>
+          <Col md={6}>
             <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Total Return | Span</Form.Label>
               <Form.Control
                 type="text"
-                value={name}
+                value={result}
                 readOnly
                 className="input-field styled-input"
               />

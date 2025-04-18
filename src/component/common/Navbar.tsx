@@ -9,6 +9,7 @@ import {
   FaCogs,
   FaBars,
   FaTimes,
+  FaList,
 } from "react-icons/fa";
 import "./styles/Navbar.css"; // Include your CSS styles
 import { urlPath } from "../utils/imageUtils";
@@ -87,7 +88,7 @@ const NavigationBar: React.FC = () => {
               }
               to="/plans"
             >
-              <FaChartLine /> Plans
+              <FaList /> Plans
             </NavLink>
           </li>
           <li className="nav-item">

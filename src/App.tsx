@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Routes, BrowserRouter, useNavigate } from "react-router-dom";
+import { Route, Routes, BrowserRouter, useNavigate, useLocation } from "react-router-dom";
 import ArbitrageModel from "./component/menu/Arbitrage";
 import UsdtUseCases from "./component/menu/UsdtUseCases";
 import PlanCalculator from "./component/menu/PlanCalculator";
@@ -12,12 +12,14 @@ import PlanList from "./component/menu/PlanList";
 
 const RedirectOnLoad: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    navigate("/landing");
-  }, []);
-
-  return null; // This component doesn't render anything
+    if (location.pathname === "/") {
+      navigate("/landing");
+    }
+  }, [location.pathname]);
+  return null;
 };
 
 const App: React.FC = () => {

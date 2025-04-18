@@ -13,7 +13,7 @@ import "./styles/InvestmentTimeline.css";
 import { PlantListing } from "../../../constants/jsons/PlanList";
 import { PlanType } from "../../../types/PlanType";
 import { createTimeline, defragmentReturnAmountList } from "../../../utils/growthPlannerUtils";
-import { DateTimelineRow, Timeline } from "../../../types/Timeline";
+import { DateTimelineRow } from "../../../types/Timeline";
 import GrowthPlannerModal from "./component/GrowthPlannerModal";
 import { RowType } from "../../../types/RowType";
 
@@ -26,7 +26,7 @@ export const InvestmentTimeline: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handlePlanSelect = (planId: any) => {
-    const selectedPlan = PlantListing.find(p => p.planId == planId);
+    const selectedPlan = PlantListing.find(p => p.planId === planId);
     if (!selectedPlan ) return;
 
     const newTimeline = createTimeline(
