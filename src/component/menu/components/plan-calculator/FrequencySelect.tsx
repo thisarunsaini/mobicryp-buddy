@@ -27,7 +27,7 @@ const FrequencySelect: React.FC<any> = (props) => {
               borderRadius: "20px",
               boxShadow:
                 selected === frequency
-                  ? "rgb(83, 83, 83) 2px 3px 10px 3px inset"
+                  ? "#2d2d2d 2px 3px 10px 3px inset"
                   : "none",
             }}
             className="custom-toggle-button"

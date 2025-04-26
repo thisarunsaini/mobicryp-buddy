@@ -25,7 +25,7 @@ export const InvestmentTimeline: React.FC = () => {
   const [PlantListing, setPlantListing] = useState<PlanType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [totalInvestment, setTotalInvestment] = useState(0);
-  const [totalEarnings, setTotalEarnings] = useState<string | number>(0);
+  const [totalEarnings, setTotalEarnings] = useState(0);
   const [yearsSpent, setYearsSpent] = useState("No Plans Selected");
 
   const scrollToBottom = () => { setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }), 100); }
@@ -99,7 +99,7 @@ export const InvestmentTimeline: React.FC = () => {
     const yearMonthDisplay = `${years} year(s) and ${months} month(s)`;
     const finalTotal = timelines[keys[keys.length - 1]]?.total || 0;
 
-    setTotalEarnings(finalTotal.toFixed(2));
+    setTotalEarnings(parseInt(finalTotal.toFixed(2)));
     setYearsSpent(yearMonthDisplay)
   }, [timelines]);
 
@@ -107,7 +107,6 @@ export const InvestmentTimeline: React.FC = () => {
   useEffect(() => {
     const clientPlans: PlanType[] = JSON.parse(sessionStorage.getItem(CLIENT_PLANS) ?? "[]");
     setPlantListing(clientPlans)
-    console.log("clientPlans", clientPlans);
   }, []);
 
   return (<>
@@ -224,13 +223,10 @@ export const InvestmentTimeline: React.FC = () => {
       {/* Summary */}
       <Card className="mt-4 bg-dark text-white">
         <Card.Body>
-          <h4 className="mb-3"><FaChartLine className="me-2" />Investment Summary</h4>
+          <h6 className="mb-3"><FaChartLine className="me-2" />Investment Summary</h6>
           <p><strong>Total Span:</strong> {yearsSpent}</p>
           <p><strong>Total Investment:</strong> ${totalInvestment}</p>
-          {/* <p><strong>Total Earnings:</strong> ${parseInt(totalEarnings) - (
-            (timelines[Object.keys(timelines)[0]].plan.capacity
-            + timelines[Object.keys(timelines)[0]].plan.hub).toFixed(2)
-            )}</p> */}
+          <p><strong>Total Earnings:</strong> ${totalEarnings-totalInvestment}</p>
         </Card.Body>
       </Card>
     </Container>}
