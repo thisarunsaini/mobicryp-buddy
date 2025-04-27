@@ -20,7 +20,7 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   // ends here
 
   useEffect(() => {
-    const clientPlans:PlanType[] = JSON.parse(sessionStorage.getItem(CLIENT_PLANS)?? "[]");
+    const clientPlans:PlanType[] = localStorage.getItem(CLIENT_PLANS)? JSON.parse(localStorage.getItem(CLIENT_PLANS)?? '[]'): PlantListing.toString();
     const plans = clubPlansPerFrequency(clientPlans);
     setClubbedPlan(plans);
   }, []);

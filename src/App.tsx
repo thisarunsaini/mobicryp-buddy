@@ -28,7 +28,7 @@ const RedirectOnLoad: React.FC = () => {
 const App: React.FC = () => {
 
   useEffect(() => {
-    sessionStorage.setItem(CLIENT_PLANS, JSON.stringify(PlantListing));
+    localStorage.setItem(CLIENT_PLANS, JSON.stringify(PlantListing));
   }, [PlanList]);
 
   return (

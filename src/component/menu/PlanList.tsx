@@ -3,9 +3,16 @@ import { Table, Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { PlantListing } from '../constants/jsons/PlanList';
 import { PlanType, Frequency, MintType } from '../types/PlanType';
 import { Heading } from '../common/Heading';
+import { CLIENT_PLANS } from '../constants/commonConstants';
 
 const PlanList: React.FC = () => {
-  const [plans, setPlans] = useState<PlanType[]>(PlantListing);
+  const [plans, setPlans] = useState<PlanType[]>(() => {
+    const storedPlans = localStorage.getItem(CLIENT_PLANS);
+    if (storedPlans) {
+      return JSON.parse(storedPlans);
+    }
+    return PlantListing;
+  });
   const [newPlan, setNewPlan] = useState<Omit<PlanType, 'planId'>>({
     hub: 0,
     hubName: '',
@@ -41,7 +48,6 @@ const PlanList: React.FC = () => {
   };
 
   const handleAddPlan = () => {
-
     if (checkFields() === false) {
       return;
     }
@@ -51,9 +57,11 @@ const PlanList: React.FC = () => {
       removable: true,
       planId: plans.length ? plans[plans.length - 1].planId + 1 : 1,
     };
-    resetPlan();
-    setPlans([...plans, newPlanWithId]);
-    PlantListing.push(newPlanWithId);
+    const updatedPlans = [...plans, newPlanWithId];
+    setPlans(updatedPlans);
+    localStorage.setItem(CLIENT_PLANS, JSON.stringify(updatedPlans));
+    // Reset the newPlan state
+    resetPlan()
     alert('Plan added successfully!');
   };
 
@@ -72,7 +80,9 @@ const PlanList: React.FC = () => {
   }
 
   const handleRemovePlan = (planId: number) => {
-    setPlans(plans.filter((p) => p.planId !== planId));
+    const updatedPlans = plans.filter((p) => p.planId !== planId);
+    setPlans(updatedPlans);
+    localStorage.setItem(CLIENT_PLANS, JSON.stringify(updatedPlans));
   };
 
   return (

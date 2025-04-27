@@ -5,15 +5,13 @@ import {
   Form,
   Tooltip,
   OverlayTrigger,
-  Card,
-  Button,
+  Card
 } from "react-bootstrap";
-import { FaChartLine, FaInfoCircle, FaTimesCircle } from "react-icons/fa";
+import { FaChartLine, FaTimesCircle } from "react-icons/fa";
 import "./styles/InvestmentTimeline.css";
 import { PlanType } from "../../../types/PlanType";
 import { createTimeline, defragmentReturnAmountList } from "../../../utils/growthPlannerUtils";
 import { DateTimelineRow } from "../../../types/Timeline";
-import GrowthPlannerModal from "./component/GrowthPlannerModal";
 import { RowType } from "../../../types/RowType";
 import { CLIENT_PLANS } from "../../../constants/commonConstants";
 
@@ -23,12 +21,17 @@ export const InvestmentTimeline: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<RowType | null>();
   const [filteredPlans, setFilteredPlans] = useState<PlanType[]>([]);
   const [PlantListing, setPlantListing] = useState<PlanType[]>([]);
-  const [showModal, setShowModal] = useState(false);
   const [totalInvestment, setTotalInvestment] = useState(0);
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [yearsSpent, setYearsSpent] = useState("No Plans Selected");
 
-  const scrollToBottom = () => { setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }), 100); }
+  const scrollToBottom = () => {
+    // setTimeout(() => {
+    //   const scrollHeight = document.body.scrollHeight;
+    //   const scrollTarget = scrollHeight * 0.9; // 90% height
+    //   window.scrollTo({ top: scrollTarget, behavior: "smooth" });
+    // }, 100);
+  };
 
 
   const handlePlanSelect = (planId: any) => {
@@ -44,13 +47,13 @@ export const InvestmentTimeline: React.FC = () => {
     setTimelines(newTimeline);
     setBackupTimelines(newTimeline);
     setTotalInvestment(selectedPlan.capacity+selectedPlan.hub);
-    scrollToBottom();
   };
 
   const handleRowSelection = (row: RowType) => {
     setSelectedRow(row);
     const feasiblePlans = PlantListing.filter((plan) => plan.capacity + plan.hub <= row.total);
     setFilteredPlans(feasiblePlans);
+    scrollToBottom();
   };
 
   const handleClearSelection = (row: RowType, index: number) => {
@@ -71,7 +74,6 @@ export const InvestmentTimeline: React.FC = () => {
     setSelectedRow(null);
     setFilteredPlans([]);
     setTotalInvestment(plan.capacity+plan.hub+totalInvestment);
-    scrollToBottom();
   };
 
   useEffect(() => {
@@ -105,23 +107,17 @@ export const InvestmentTimeline: React.FC = () => {
 
 
   useEffect(() => {
-    const clientPlans: PlanType[] = JSON.parse(sessionStorage.getItem(CLIENT_PLANS) ?? "[]");
+    const clientPlans: PlanType[] = localStorage.getItem(CLIENT_PLANS)? JSON.parse(localStorage.getItem(CLIENT_PLANS) ?? "[]"): PlantListing;
     setPlantListing(clientPlans)
   }, []);
 
   return (<>
     {PlantListing?.length > 0 && <Container className="my-4">
-      <GrowthPlannerModal show={showModal} handleClose={() => setShowModal(false)} />
-      <Button variant="info" className="mb-3" onClick={() => setShowModal(true)}>
-        <FaInfoCircle className="me-2" /> Growth Planner Info
-      </Button>
-
       {/* Plan Selector */}
       <Form.Group controlId="planSelect">
         <Form.Label>Select a Plan to Begin</Form.Label>
         <Form.Select
           onChange={(e) => {
-
             handlePlanSelect(e.target.value);
           }}
         >
@@ -221,14 +217,16 @@ export const InvestmentTimeline: React.FC = () => {
       )}
 
       {/* Summary */}
-      <Card className="mt-4 bg-dark text-white">
+      {totalInvestment !=0 && <Card className="mt-4 bg-dark text-white">
         <Card.Body>
-          <h6 className="mb-3"><FaChartLine className="me-2" />Investment Summary</h6>
-          <p><strong>Total Span:</strong> {yearsSpent}</p>
-          <p><strong>Total Investment:</strong> ${totalInvestment}</p>
-          <p><strong>Total Earnings:</strong> ${totalEarnings-totalInvestment}</p>
+          <h6 className="mb-3 text-center"><FaChartLine className="me-2" />Investment Summary</h6>
+          <p><strong>Total Span:</strong> <span className="text-warning">{yearsSpent}</span></p>
+          <p><strong>Total Investment:</strong> <span className="text-danger">${totalInvestment}</span></p>
+          <p><strong>Total Profit:</strong> <span className="text-success">${totalEarnings-totalInvestment}</span></p>
+          <p><strong>Rate of investment(ROI):</strong> <span className="text-success">${totalEarnings}</span></p>
         </Card.Body>
       </Card>
+      }
     </Container>}
   </>
   );
