@@ -1,7 +1,12 @@
+.navbar{
+    /* border-bottom: 1px solid #2f2f2f; */
+    box-shadow: 0px 1px 2px #232323;
+}
 
 .navbar-toggler{
     color: white !important;
     border-color: white;
+    margin: 0 10px !important;
 }
 
 .nav-link {
@@ -11,4 +16,8 @@
 .nav-link.active {
     color: #007bff; /* Color for active link */
     font-weight: bold;
+}
+
+.navbar-nav{
+    padding: 0 10px !important;
 }

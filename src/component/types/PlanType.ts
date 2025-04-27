@@ -9,6 +9,7 @@ export interface PlanType {
   type: MintType;
   remarks?: string;
   endDate?: string;
+  removable?: boolean | true;
 }
 
 export enum Frequency {

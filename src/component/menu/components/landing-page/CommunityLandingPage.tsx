@@ -6,7 +6,7 @@ import { Heading } from "../../../common/Heading";
 const CommunityLandingPage: React.FC = () => {
   return (
     <Container className="community-info-section">
-      <Row>
+      <Row className="px-2">
         <Col>
           <Heading
             heading="Community Information"

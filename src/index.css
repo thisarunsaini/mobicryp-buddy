@@ -1,5 +1,10 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+body {
   background: linear-gradient(145deg, #29515d, #1e293b) !important;
   font-family: 'Inter', sans-serif;
   color: #222222 !important;

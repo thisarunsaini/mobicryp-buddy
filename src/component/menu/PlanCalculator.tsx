@@ -12,7 +12,7 @@ const PlanCalculator: React.FC = () => {
   const [frequency, setFrequency] = React.useState<Frequency>(Frequency.Daily);
 
   return (
-    <Container className="plan-calculator-container">
+    <Container className="plan-calculator-section">
       <Row>
         <Col>
           <Heading

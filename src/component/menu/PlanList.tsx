@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table, Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { PlantListing } from '../constants/jsons/PlanList';
 import { PlanType, Frequency, MintType } from '../types/PlanType';
+import { Heading } from '../common/Heading';
 
 const PlanList: React.FC = () => {
   const [plans, setPlans] = useState<PlanType[]>(PlantListing);
@@ -14,6 +15,7 @@ const PlanList: React.FC = () => {
     growth: 0,
     type: MintType.Manual,
     remarks: '',
+    removable: true,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -30,13 +32,32 @@ const PlanList: React.FC = () => {
     }));
   };
 
+  const checkFields = () => {
+    if (!newPlan.hubName || !newPlan.hub || !newPlan.capacity || !newPlan.durationInMonths) {
+      alert('Please fill all the fields');
+      return false;
+    }
+    return true;
+  };
+
   const handleAddPlan = () => {
+
+    if (checkFields() === false) {
+      return;
+    }
+
     const newPlanWithId: PlanType = {
       ...newPlan,
+      removable: true,
       planId: plans.length ? plans[plans.length - 1].planId + 1 : 1,
     };
+    resetPlan();
     setPlans([...plans, newPlanWithId]);
     PlantListing.push(newPlanWithId);
+    alert('Plan added successfully!');
+  };
+
+  const resetPlan = () => {
     setNewPlan({
       hub: 0,
       hubName: '',
@@ -46,17 +67,25 @@ const PlanList: React.FC = () => {
       growth: 0,
       type: MintType.Manual,
       remarks: '',
+      removable: true,
     });
-    alert('Plan added successfully!');
-  };
+  }
 
   const handleRemovePlan = (planId: number) => {
     setPlans(plans.filter((p) => p.planId !== planId));
   };
 
   return (
-    <Container className="my-5">
-      <h3 className='text-light'>Plan List</h3>
+    <Container className="plan-list-section">
+      <Row>
+        <Col>
+          <Heading
+            className="mb-4 pb-4"
+            heading="List of Plans"
+            subHeading="List of plans available for minting"
+          />
+        </Col>
+      </Row>
       <Table striped bordered hover className="my-3">
         <thead>
           <tr>
@@ -85,13 +114,13 @@ const PlanList: React.FC = () => {
               <td>{plan.type}</td>
               <td>{plan.remarks}</td>
               <td>
-                <Button
+               {plan?.removable && <Button
                   variant="danger"
                   size="sm"
                   onClick={() => handleRemovePlan(plan.planId)}
                 >
                   Remove
-                </Button>
+                </Button>}
               </td>
             </tr>
           ))}
@@ -104,7 +133,7 @@ const PlanList: React.FC = () => {
           <Col>
             <Form.Control
               name="hubName"
-              placeholder="Hub Name"
+              placeholder="Plan Name"
               value={newPlan.hubName}
               onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
             />
@@ -113,7 +142,7 @@ const PlanList: React.FC = () => {
             <Form.Control
               name="hub"
               type="number"
-              placeholder="Hub"
+              placeholder="Hub($)"
               onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
             />
           </Col>
@@ -121,7 +150,7 @@ const PlanList: React.FC = () => {
             <Form.Control
               name="capacity"
               type="number"
-              placeholder="Capacity"
+              placeholder="Capacity($)"
               onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
             />
           </Col>
@@ -129,7 +158,7 @@ const PlanList: React.FC = () => {
             <Form.Control
               name="durationInMonths"
               type="number"
-              placeholder="Duration"
+              placeholder="Duration(months)"
               onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
             />
           </Col>
@@ -137,7 +166,7 @@ const PlanList: React.FC = () => {
             <Form.Control
               name="growth"
               type="number"
-              placeholder="Return %"
+              placeholder="ROI(%)"
               onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
             />
           </Col>
@@ -145,6 +174,7 @@ const PlanList: React.FC = () => {
             <Form.Control
               as="select"
               name="frequency"
+              placeholder='select frequency'
               value={newPlan.frequency}
               onChange={(e) => handleChange(e as unknown as React.ChangeEvent<HTMLSelectElement>)}
             >
@@ -172,7 +202,7 @@ const PlanList: React.FC = () => {
           <Col>
             <Form.Control
               name="remarks"
-              placeholder="Remarks"
+              placeholder="anything to add"
               onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
             />
           </Col>
@@ -180,18 +210,7 @@ const PlanList: React.FC = () => {
         <Row className="mt-3">
         <Col>
             <Button onClick={handleAddPlan}>Add</Button>
-            <Button variant="secondary" className="ms-2" onClick={() =>
-              setNewPlan({
-                hub: 0,
-                hubName: '',
-                capacity: 0,
-                durationInMonths: 0,
-                frequency: Frequency.Daily,
-                growth: 0,
-                type: MintType.Manual,
-                remarks: '',
-              })
-            }>
+            <Button variant="secondary" className="ms-2" onClick={resetPlan}>
               Reset
             </Button>
           </Col>

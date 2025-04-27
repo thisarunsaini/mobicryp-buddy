@@ -1,20 +1,3 @@
-.arbitrage-model-section,
-.usdt-use-cases-section,
-.plan-calculator-section,
-.community-info-section,
-.faqs-section,
-.growth-planner-section {
-  color: white;
-  padding: 40px 20px;
-  height: 95vh;
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-.growth-planner-section {
-  height: max-content;
-}
-
 .image-landing {
   max-height: 300px;
   text-align: center;

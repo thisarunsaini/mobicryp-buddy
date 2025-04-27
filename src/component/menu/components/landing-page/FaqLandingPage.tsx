@@ -6,7 +6,7 @@ import { Heading } from "../../../common/Heading";
 const FaqLandingPage: React.FC = () => {
   return (
     <Container className="faqs-section">
-      <Row>
+      <Row className="px-2">
         <Col>
           <Heading
             heading="Frequently Asked Questions"

@@ -5,7 +5,7 @@ import { Heading } from "../../../common/Heading";
 const ArbitrageLandingPage: React.FC = () => {
   return (
     <Container className="arbitrage-model-section">
-      <Row>
+      <Row className="px-2">
         <Col>
           <Heading
             heading="Arbitrage Model"

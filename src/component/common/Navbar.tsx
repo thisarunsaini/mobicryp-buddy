@@ -24,12 +24,17 @@ const NavigationBar: React.FC = () => {
   return (
     <nav className="navbar navbar-expand-lg">
       <NavLink className="navbar-brand px-2" to="/landing">
-        <img
-          height={30}
-          src={urlPath("assets/logo.png")}
-          alt="Brand Logo"
+        <video
+          height={50}
+          autoPlay
+          loop
+          muted
+          playsInline
           className="brand-logo"
-        />
+        >
+          <source src={urlPath("assets/buddy.mov")} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </NavLink>
       <button className="navbar-toggler" type="button" onClick={toggleNavbar}>
         {isCollapsed ? <FaBars /> : <FaTimes color="red" />}

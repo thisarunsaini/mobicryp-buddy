@@ -6,7 +6,7 @@ import { Heading } from "../../../common/Heading";
 const UsdtCaseLandingPage: React.FC = () => {
   return (
     <Container className="usdt-use-cases-section">
-      <Row>
+      <Row className="px-2">
         <Col>
           <Heading
             heading="USDT Use Cases"

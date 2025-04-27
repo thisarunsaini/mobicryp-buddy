@@ -13,16 +13,19 @@ import { Heading } from "../common/Heading";
 
 const UsdtUseCases: React.FC = () => {
   return (
-    <Container className="my-5 usdt-use-cases">
-      <Heading
-        className="mb-4 pb-4"
-        heading="Global USDT Use Cases"
-        subHeading="Tether (USDT) has revolutionized the financial world, offering a stable and flexible option for various transactions globally. Below are some of the most intensive and extensive use cases of USDT."
-      />
-
-      <Row className="g-4">
+    <Container className="usdt-use-cases">
+      <Row>
+        <Col>
+          <Heading
+            className="mb-4 pb-4"
+            heading="Global USDT Use Cases"
+            subHeading="Tether (USDT) has revolutionized the financial world, offering a stable and flexible option for various transactions globally. Below are some of the most intensive and extensive use cases of USDT."
+          />
+        </Col>
+      </Row>
+      <Row>
         {/* Remittances Use Case */}
-        <Col md={4}>
+        <Col xs={12} md={6} lg={4} className="mb-4">
           <Card className="h-100 shadow-sm border-0">
             <Card.Body className="text-center">
               <FaExchangeAlt size={50} className="text-primary mb-3" />
@@ -36,7 +39,7 @@ const UsdtUseCases: React.FC = () => {
         </Col>
 
         {/* E-commerce Use Case */}
-        <Col md={4}>
+        <Col xs={12} md={6} lg={4} className="mb-4">
           <Card className="h-100 shadow-sm border-0">
             <Card.Body className="text-center">
               <FaShoppingCart size={50} className="text-success mb-3" />
@@ -50,7 +53,7 @@ const UsdtUseCases: React.FC = () => {
         </Col>
 
         {/* Global Transactions Use Case */}
-        <Col md={4}>
+        <Col xs={12} md={6} lg={4} className="mb-4">
           <Card className="h-100 shadow-sm border-0">
             <Card.Body className="text-center">
               <FaGlobe size={50} className="text-danger mb-3" />
@@ -64,7 +67,7 @@ const UsdtUseCases: React.FC = () => {
         </Col>
 
         {/* Savings & Lending Use Case */}
-        <Col md={4}>
+        <Col xs={12} md={6} lg={4} className="mb-4">
           <Card className="h-100 shadow-sm border-0">
             <Card.Body className="text-center">
               <FaPiggyBank size={50} className="text-warning mb-3" />
@@ -78,7 +81,7 @@ const UsdtUseCases: React.FC = () => {
         </Col>
 
         {/* Instant Payments Use Case */}
-        <Col md={4}>
+        <Col xs={12} md={6} lg={4} className="mb-4">
           <Card className="h-100 shadow-sm border-0">
             <Card.Body className="text-center">
               <FaBolt size={50} className="text-info mb-3" />
@@ -92,7 +95,7 @@ const UsdtUseCases: React.FC = () => {
         </Col>
 
         {/* Crypto Trading Use Case */}
-        <Col md={4}>
+        <Col xs={12} md={6} lg={4} className="mb-4">
           <Card className="h-100 shadow-sm border-0">
             <Card.Body className="text-center">
               <FaMoneyBillWave size={50} className="text-dark mb-3" />
