@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/mobicryp-buddy/static/css/main.95362b9d.css",
-    "main.js": "/mobicryp-buddy/static/js/main.842cc6ca.js",
+    "main.css": "/mobicryp-buddy/static/css/main.ad34e377.css",
+    "main.js": "/mobicryp-buddy/static/js/main.aaa39b37.js",
     "static/js/453.177b4165.chunk.js": "/mobicryp-buddy/static/js/453.177b4165.chunk.js",
+    "static/media/bootstrap-icons.woff?": "/mobicryp-buddy/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
+    "static/media/bootstrap-icons.woff2?": "/mobicryp-buddy/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
     "index.html": "/mobicryp-buddy/index.html",
-    "main.95362b9d.css.map": "/mobicryp-buddy/static/css/main.95362b9d.css.map",
-    "main.842cc6ca.js.map": "/mobicryp-buddy/static/js/main.842cc6ca.js.map",
+    "main.ad34e377.css.map": "/mobicryp-buddy/static/css/main.ad34e377.css.map",
+    "main.aaa39b37.js.map": "/mobicryp-buddy/static/js/main.aaa39b37.js.map",
     "453.177b4165.chunk.js.map": "/mobicryp-buddy/static/js/453.177b4165.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.95362b9d.css",
-    "static/js/main.842cc6ca.js"
+    "static/css/main.ad34e377.css",
+    "static/js/main.aaa39b37.js"
   ]
 }

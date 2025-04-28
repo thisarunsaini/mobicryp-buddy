@@ -38,70 +38,46 @@ export const Footer: React.FC<any> = () => {
             Email: sarun6153@gmail.com <br />
             Phone: <a href="tel:8607972097">8607972097</a>
           </p>
-          <div className="d-flex justify-content-center">
-            {/* Facebook */}
+        </div>
+      </div>
+      <hr className="bg-light" />
+      <div className="text-center">
+        <p className="mb-0">
+          © 2024 Mobicryp-buddy. All rights reserved.
+          <br />
+          <span>Let's Connect and Grow Together:</span>
+          <div className="social-links d-flex justify-content-center">
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/arun.6153"
+              className="text-primary text-decoration-none me-3 social-icon"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white me-3"
               aria-label="Facebook"
             >
               <i className="bi bi-facebook fs-4"></i>
             </a>
-
-            {/* Twitter */}
             <a
-              href="https://twitter.com"
+              href="https://www.instagram.com/this.saini/"
+              className="text-danger text-decoration-none me-3 social-icon"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white me-3"
-              aria-label="Twitter"
-            >
-              <i className="bi bi-twitter fs-4"></i>
-            </a>
-
-            {/* Instagram */}
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white me-3"
               aria-label="Instagram"
             >
               <i className="bi bi-instagram fs-4"></i>
             </a>
-
-            {/* LinkedIn */}
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/thisarunsaini/"
+              className="text-info text-decoration-none me-3 social-icon"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white me-3"
               aria-label="LinkedIn"
             >
               <i className="bi bi-linkedin fs-4"></i>
             </a>
-
-            {/* YouTube */}
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white"
-              aria-label="YouTube"
-            >
-              <i className="bi bi-youtube fs-4"></i>
-            </a>
           </div>
-        </div>
-      </div>
-
-      <hr className="bg-light" />
-
-      <div className="text-center">
-        <p className="mb-0"> © 2024 Mobicryp-buddy. All rights reserved.<br></br>
-          Follow us on social media: [Links to Social Media]</p>
+          <br />
+          <span className="fw-bold">Join our community and let's stay connected!</span>
+        </p>
       </div>
     </div>
   </footer>

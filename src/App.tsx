@@ -11,6 +11,7 @@ import { GrowthPlanner } from "./component/menu/GrowthPlanner";
 import PlanList from "./component/menu/PlanList";
 import { CLIENT_PLANS } from "./component/constants/commonConstants";
 import { PlantListing } from "./component/constants/jsons/PlanList";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./App.css";
 
 const RedirectOnLoad: React.FC = () => {

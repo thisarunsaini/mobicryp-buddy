@@ -1,7 +1,7 @@
 {
   "homepage": "https://thisarunsaini.github.com/mobicryp-buddy/",
   "name": "mobicryp-buddy",
-  "version": "0.1.0",
+  "version": "0.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.3.1",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "framer-motion": "^11.11.9",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
