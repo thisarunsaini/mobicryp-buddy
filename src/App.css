@@ -1,6 +1,6 @@
 .arbitrage-model-section,
 .usdt-use-cases-section,
-.plan-calculator-section,
+.plan-calculator-section-min,
 .community-info-section,
 .faqs-section,
 .growth-planner-section,
@@ -14,6 +14,9 @@
   text-justify: inter-word;
 }
 
-.growth-planner-section {
+.plan-calculator-section,
+.growth-planner-section,
+.plan-list-section,
+.usdt-use-cases{
   height: max-content;
 }

@@ -16,7 +16,7 @@ const CommunityLandingPage: React.FC = () => {
             trading potential!"
             subHeaderPosition="justify"
           />
-          <Link to="/community">Join Community</Link>
+          {/* <Link to="/community">Join Community</Link> */}
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
           <Image

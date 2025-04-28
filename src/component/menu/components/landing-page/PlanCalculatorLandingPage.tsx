@@ -5,7 +5,7 @@ import { Heading } from "../../../common/Heading";
 
 const PlanCalculatorLandingPage: React.FC = () => {
   return (
-    <Container className="plan-calculator-section">
+    <Container className="plan-calculator-section-min">
       <Row className="px-2">
         <Col>
           <Heading

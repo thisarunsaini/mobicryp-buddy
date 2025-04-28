@@ -1,6 +1,7 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
 import { urlPath } from "../../../utils/imageUtils";
 import { Heading } from "../../../common/Heading";
+import { Link } from "react-router-dom";
 
 const ArbitrageLandingPage: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const ArbitrageLandingPage: React.FC = () => {
             exchanges."
             subHeaderPosition="justify"
           />
+           <Link to="/arbitrage">learn it - earn it.</Link>
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
           <Image

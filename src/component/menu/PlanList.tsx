@@ -1,9 +1,137 @@
 import React, { useState } from 'react';
-import { Table, Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { Table, Container, Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import { PlantListing } from '../constants/jsons/PlanList';
 import { PlanType, Frequency, MintType } from '../types/PlanType';
 import { Heading } from '../common/Heading';
 import { CLIENT_PLANS } from '../constants/commonConstants';
+import './styles/PlanList.css';
+
+interface AddPlanModalProps {
+  show: boolean;
+  handleClose: () => void;
+  handleAddPlan: () => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  resetPlan: () => void;
+  newPlan: Omit<PlanType, 'planId'>;
+}
+
+const AddPlanModal: React.FC<AddPlanModalProps> = ({
+  show,
+  handleClose,
+  handleAddPlan,
+  handleChange,
+  resetPlan,
+  newPlan,
+}) => {
+  return (
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add New Plan</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Container fluid>
+            <div className="modal-form-grid">
+              <Row>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    name="hubName"
+                    placeholder="Plan Name"
+                    value={newPlan.hubName}
+                    onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  />
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    name="hub"
+                    type="number"
+                    min={1}
+                    placeholder="Hub($)"
+                    value={newPlan.hub || ''}
+                    onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  />
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    name="capacity"
+                    type="number"
+                    min={1}
+                    placeholder="Capacity($)"
+                    value={newPlan.capacity || ''}
+                    onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  />
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    name="durationInMonths"
+                    type="number"
+                    min={1}
+                    placeholder="Duration(months)"
+                    value={newPlan.durationInMonths || ''}
+                    onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  />
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    name="growth"
+                    type="number"
+                    min={1}
+                    placeholder="ROI(%)"
+                    value={newPlan.growth || ''}
+                    onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  />
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    as="select"
+                    name="frequency"
+                    placeholder="select frequency"
+                    value={newPlan.frequency}
+                    onChange={(e) => handleChange(e as unknown as React.ChangeEvent<HTMLSelectElement>)}
+                  >
+                    {Object.values(Frequency).map((freq) => (
+                      <option key={freq} value={freq}>
+                        {freq}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    as="select"
+                    name="type"
+                    value={newPlan.type}
+                    onChange={(e) => handleChange(e as unknown as React.ChangeEvent<HTMLSelectElement>)}
+                  >
+                    {Object.values(MintType).map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col md={6} className="mb-3">
+                  <Form.Control
+                    name="remarks"
+                    placeholder="anything to add"
+                    value={newPlan.remarks}
+                    onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  />
+                </Col>
+              </Row>
+            </div>
+          </Container>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => { resetPlan(); }}>
+          Reset
+        </Button>
+        <Button onClick={() => { handleAddPlan(); handleClose(); }}>Add</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const PlanList: React.FC = () => {
   const [plans, setPlans] = useState<PlanType[]>(() => {
@@ -24,6 +152,7 @@ const PlanList: React.FC = () => {
     remarks: '',
     removable: true,
   });
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -60,8 +189,7 @@ const PlanList: React.FC = () => {
     const updatedPlans = [...plans, newPlanWithId];
     setPlans(updatedPlans);
     localStorage.setItem(CLIENT_PLANS, JSON.stringify(updatedPlans));
-    // Reset the newPlan state
-    resetPlan()
+    resetPlan();
     alert('Plan added successfully!');
   };
 
@@ -77,7 +205,7 @@ const PlanList: React.FC = () => {
       remarks: '',
       removable: true,
     });
-  }
+  };
 
   const handleRemovePlan = (planId: number) => {
     const updatedPlans = plans.filter((p) => p.planId !== planId);
@@ -96,7 +224,12 @@ const PlanList: React.FC = () => {
           />
         </Col>
       </Row>
-      <Table striped bordered hover className="my-3">
+      <Row className="mb-3">
+        <Col>
+          <Button variant='link'  className="m-0 p-0 text-info" onClick={() => setShowAddModal(true)}>Add New Plan</Button>
+        </Col>
+      </Row>
+      <Table striped bordered hover responsive className="my-3">
         <thead>
           <tr>
             <th>ID</th>
@@ -136,96 +269,14 @@ const PlanList: React.FC = () => {
           ))}
         </tbody>
       </Table>
-      <hr className='text-light'/>
-      <h5 className="mt-5 text-light">Add New Plan</h5>
-      <Form className="mb-3">
-        <Row>
-          <Col>
-            <Form.Control
-              name="hubName"
-              placeholder="Plan Name"
-              value={newPlan.hubName}
-              onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              name="hub"
-              type="number"
-              placeholder="Hub($)"
-              onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              name="capacity"
-              type="number"
-              placeholder="Capacity($)"
-              onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              name="durationInMonths"
-              type="number"
-              placeholder="Duration(months)"
-              onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              name="growth"
-              type="number"
-              placeholder="ROI(%)"
-              onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              as="select"
-              name="frequency"
-              placeholder='select frequency'
-              value={newPlan.frequency}
-              onChange={(e) => handleChange(e as unknown as React.ChangeEvent<HTMLSelectElement>)}
-            >
-              {Object.values(Frequency).map((freq) => (
-                <option key={freq} value={freq}>
-                  {freq}
-                </option>
-              ))}
-            </Form.Control>
-          </Col>
-          <Col>
-            <Form.Control
-              as="select"
-              name="type"
-              value={newPlan.type}
-              onChange={(e) => handleChange(e as unknown as React.ChangeEvent<HTMLSelectElement>)}
-            >
-              {Object.values(MintType).map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </Form.Control>
-          </Col>
-          <Col>
-            <Form.Control
-              name="remarks"
-              placeholder="anything to add"
-              onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
-            />
-          </Col>
-        </Row>
-        <Row className="mt-3">
-        <Col>
-            <Button onClick={handleAddPlan}>Add</Button>
-            <Button variant="secondary" className="ms-2" onClick={resetPlan}>
-              Reset
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+      <AddPlanModal
+        show={showAddModal}
+        handleClose={() => setShowAddModal(false)}
+        handleAddPlan={handleAddPlan}
+        handleChange={handleChange}
+        resetPlan={resetPlan}
+        newPlan={newPlan}
+      />
     </Container>
   );
 };
