@@ -23,6 +23,22 @@ const AddPlanModal: React.FC<AddPlanModalProps> = ({
   resetPlan,
   newPlan,
 }) => {
+
+  const checkFields = () => {
+    if (!newPlan.hubName || !newPlan.hub || !newPlan.capacity || !newPlan.durationInMonths) {
+      alert('Please fill all the fields');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSave = () => {
+    if(checkFields() === true) {
+      handleAddPlan();
+      handleClose();
+    }
+  };
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -127,7 +143,7 @@ const AddPlanModal: React.FC<AddPlanModalProps> = ({
         <Button variant="secondary" onClick={() => { resetPlan(); }}>
           Reset
         </Button>
-        <Button onClick={() => { handleAddPlan(); handleClose(); }}>Add</Button>
+        <Button onClick={() => { handleSave(); }}>Add</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -168,18 +184,18 @@ const PlanList: React.FC = () => {
     }));
   };
 
-  const checkFields = () => {
-    if (!newPlan.hubName || !newPlan.hub || !newPlan.capacity || !newPlan.durationInMonths) {
-      alert('Please fill all the fields');
-      return false;
-    }
-    return true;
-  };
+  // const checkFields = () => {
+  //   if (!newPlan.hubName || !newPlan.hub || !newPlan.capacity || !newPlan.durationInMonths) {
+  //     alert('Please fill all the fields');
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const handleAddPlan = () => {
-    if (checkFields() === false) {
-      return;
-    }
+    // if (checkFields() === false) {
+    //   return;
+    // }
 
     const newPlanWithId: PlanType = {
       ...newPlan,

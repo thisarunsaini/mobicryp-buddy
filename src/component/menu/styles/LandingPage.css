@@ -1,5 +1,5 @@
 .image-landing {
-  max-height: 300px;
+  max-height: 16rem;
   text-align: center;
 }
 
@@ -13,4 +13,14 @@ h2 {
   margin-right: auto;
   height: auto;
   width: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  .image-landing {
+    max-height: 13rem;
+    margin-top: 5rem;
+  }
+  .image-center {
+    width: 150px;
+  }
 }

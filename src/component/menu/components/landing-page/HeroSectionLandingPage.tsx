@@ -18,11 +18,11 @@ const HeroSectionLandingPage: React.FC<{ text: string }> = (props) => {
           <p className="hero-subtitle animated-subtitle">
             Revolutionizing USDT Trading Across Borders
           </p>
-          <Link className="text-dark link-button" to="/calculator">Now Start Calculating Your Future !!!</Link>
+          <Link className="text-dark link-button mt-5" to="/calculator">Now Start Calculating Your Future !!!</Link>
         </Col>
         <Col className="hero-section-col">
           <Image
-            className="hero-section-crypto"
+            className="image-landing"
             src={urlPath("assets/undrawCrypto.svg")}
           />
         </Col>

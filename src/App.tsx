@@ -28,7 +28,9 @@ const RedirectOnLoad: React.FC = () => {
 const App: React.FC = () => {
 
   useEffect(() => {
-    localStorage.setItem(CLIENT_PLANS, JSON.stringify(PlantListing));
+    if (localStorage.getItem(CLIENT_PLANS) === null) {
+      localStorage.setItem(CLIENT_PLANS, JSON.stringify(PlantListing));
+    }
   }, [PlanList]);
 
   return (
