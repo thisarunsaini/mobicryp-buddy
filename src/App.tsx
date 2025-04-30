@@ -26,6 +26,14 @@ const RedirectOnLoad: React.FC = () => {
   return null;
 };
 
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+  return null;
+};
+
 const App: React.FC = () => {
 
   useEffect(() => {
@@ -37,6 +45,7 @@ const App: React.FC = () => {
   return (
     <>
       <BrowserRouter basename="/mobicryp-buddy">
+        <ScrollToTop />
         <RedirectOnLoad />
         <NavigationBar />
         <div style={{ minHeight: "90vh" }}>

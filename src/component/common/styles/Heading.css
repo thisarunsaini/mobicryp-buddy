@@ -2,3 +2,7 @@
     width: fit-content;
     margin: auto;
 }
+
+.sub-heading{
+    font-weight: 600 !important;
+}

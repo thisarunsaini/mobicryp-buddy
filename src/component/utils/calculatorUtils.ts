@@ -10,3 +10,10 @@ export const frequencyInDays = (freq: String) => {
       return 30;
   }
 };
+
+export const calculateSpan = (durationInMonths: number) => {
+  const years = Math.floor(durationInMonths / 12);
+  const months = durationInMonths % 12;
+  
+  return `${years} Year(s) ${months} Month(s)`;
+}

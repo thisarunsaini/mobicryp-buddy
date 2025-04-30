@@ -91,8 +91,12 @@ export const InvestmentTimeline: React.FC = () => {
 
     let years = lastDate.getFullYear() - firstDate.getFullYear();
     let months = lastDate.getMonth() - firstDate.getMonth();
+    let days = lastDate.getDate() - firstDate.getDate();
 
-    // Adjust if months go negative
+    if (days < 0) {
+      months--; // Not a full month, so subtract one
+    }
+
     if (months < 0) {
       years--;
       months += 12;

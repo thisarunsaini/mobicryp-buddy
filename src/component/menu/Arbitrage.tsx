@@ -19,7 +19,7 @@ const Arbitrage: React.FC = () => {
     "First: Buy USDT in Dubai, Purchase USDT at ₹100.",
     "Second: Sell USDT in India, Sell USDT at ₹102.",
     "Third: Step 3: Calculate Profit, Profit = (Selling Price - Purchase Price) × Quantity",
-    "Example Calculation: Amount Lent: 1000 USDT, Cost in Dubai: ₹100, selling Price in India: ₹102, differnce in prices: ₹2 per USDT, and profit per Trade: ₹2000.",
+    "Example Calculation: Amount Lent: 1000 USDT, Cost in Dubai: ₹100, selling Price in India: ₹102, difference in prices: ₹2 per USDT, and profit per Trade: ₹2000.",
     "Long-Term Profit Calculation: Day Trade Profit: ₹2000, Total Profit Over 730 Days: ₹14,60,000.",
   ];
 

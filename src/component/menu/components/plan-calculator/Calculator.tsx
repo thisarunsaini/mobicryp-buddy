@@ -6,6 +6,7 @@ import { PlantListing } from "../../../constants/jsons/PlanList";
 import "./styles/Calculator.css";
 import { Link } from "react-router-dom";
 import { CLIENT_PLANS } from "../../../constants/commonConstants";
+import { calculateSpan } from "../../../utils/calculatorUtils";
 
 export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
   const { frequency } = props;
@@ -55,9 +56,8 @@ export const Calculator: React.FC<{ frequency: Frequency }> = (props) => {
       setDuration(plan.durationInMonths);
       setGrossReturn(plan.growth);
       setMintType(plan.type);
-      const years = Math.floor(plan.durationInMonths / 12);
-      const months = plan.durationInMonths % 12;
-      setResult(`$${(plan.capacity * plan.growth / 100).toFixed(2)} | ${years} Year(s) ${months} Month(s)`);
+
+      setResult(`$${(plan.capacity * plan.growth / 100).toFixed(2)} | ${calculateSpan(plan.durationInMonths)}`);
     }
   };
 
